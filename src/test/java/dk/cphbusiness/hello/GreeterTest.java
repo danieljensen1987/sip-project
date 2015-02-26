@@ -9,8 +9,10 @@ import org.junit.BeforeClass;
 
 public class GreeterTest {
     
+    Proposal prop = new Proposal();
     public Student student = new Student("1");
     private List<Teacher> teacherList = new ArrayList();
+    private List<Teacher> teacherList2 = new ArrayList();
     
     private Teacher teacher1 = new Teacher("1");
     private Teacher teacher2 = new Teacher("2");
@@ -39,5 +41,14 @@ public class GreeterTest {
         assertEquals(subject1.getTeachers().size(), 2);
         assertEquals(subject1.getTitle(), "testTitle");
         assertEquals(describtion, "testDesc");
+    }
+    
+    @Test
+    public void testAddProposal(){
+        teacherList2.add(teacher1);
+        teacherList2.add(teacher2);
+        //Subject newSubject = new Subject("testTitle", "testDesc", teacherList2);
+        prop.addProposal("NewProposal", "This is a description", teacherList2);
+        assertEquals(prop.proposedSubjects.size(), 1);
     }
 }
