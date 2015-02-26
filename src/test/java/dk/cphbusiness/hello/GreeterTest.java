@@ -18,13 +18,15 @@ public class GreeterTest {
     @Test
     public void testCreateStudent() {
         assertNotNull(student);
-
+        String StudID = student.getStudentID();
+        assertEquals(StudID, "1");
     }
 
     @Test
     public void testCreateTeacher() {
-        assertNotNull(teacher1);
-
+        assertNotNull(teacher1);        
+        String ID = teacher1.getTeacherID();
+        assertEquals(ID, "1");
     }
 
     @Test
@@ -32,8 +34,10 @@ public class GreeterTest {
         teacherList.add(teacher1);
         teacherList.add(teacher2);
         Subject subject1 = new Subject("testTitle", "testDesc", teacherList);
+        String describtion = subject1.getDescription();
         
         assertEquals(subject1.getTeachers().size(), 2);
         assertEquals(subject1.getTitle(), "testTitle");
+        assertEquals(describtion, "testDesc");
     }
 }
