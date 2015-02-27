@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dk.cphbusiness.hello;
+package dk.cphbusiness.entities;
 
+import dk.cphbusiness.entities.Teacher;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Subject {
 
     public List<Teacher> getTeachers() {
         return teachers;
-    }
+    }    
   
 }
 

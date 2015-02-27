@@ -5,6 +5,7 @@
  */
 package dk.cphbusiness.hello;
 
+import dk.cphbusiness.entities.Student;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
