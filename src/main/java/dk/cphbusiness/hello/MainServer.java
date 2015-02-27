@@ -16,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -65,8 +67,13 @@ public class MainServer {
                 //Used to get existing data. 
                 case "GET":
                     try {
-                        Student s = new Student("1");
-                        response = gson.toJson(s);
+                        System.out.println("Du er her!");
+                        Student s1 = new Student("2");
+                        
+                        List al = new ArrayList();
+                        al.add(s1);
+                        
+                        response = gson.toJson(al);
 
                     } catch (NumberFormatException nfe) {
                         response = "Id is not a number";
@@ -97,7 +104,6 @@ public class MainServer {
             String f = requestedFile.substring(requestedFile.lastIndexOf("/") + 1);
             try {
                 String extension = f.substring(f.lastIndexOf("."));
-                mime = getMime(extension);
                 File file = new File(publicFolder + f);
                 System.out.println(publicFolder + f);
                 bytesToSend = new byte[(int) file.length()];
@@ -120,28 +126,5 @@ public class MainServer {
             }
         }
 
-        private String getMime(String extension) {
-            String mime = "";
-            switch (extension) {
-                case ".pdf":
-                    mime = "application/pdf";
-                    break;
-                case ".png":
-                    mime = "image/png";
-                case ".css":
-                    mime = "text/css";
-                    break;
-                case ".js":
-                    mime = "text/javascript";
-                    break;
-                case ".html":
-                    mime = "text/html";
-                    break;
-                case ".jar":
-                    mime = "application/java-archive";
-                    break;
-            }
-            return mime;
-        }
     }
 }
