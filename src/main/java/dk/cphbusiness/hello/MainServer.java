@@ -16,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -66,8 +68,12 @@ public class MainServer {
                 case "GET":
                     try {
                         System.out.println("Du er her!");
-                        Student s = new Student("1");
-                        response = gson.toJson(s);
+                        Student s1 = new Student("2");
+                        
+                        List al = new ArrayList();
+                        al.add(s1);
+                        
+                        response = gson.toJson(al);
 
                     } catch (NumberFormatException nfe) {
                         response = "Id is not a number";
