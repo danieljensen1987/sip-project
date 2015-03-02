@@ -35,15 +35,8 @@ public class SubjectHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 try {
-                    System.out.println("Du er her!");
-                    Student s2 = new Student("1");
-                    Student s1 = new Student("2");
-
-                    List al = new ArrayList();
-                    al.add(s1);
-                    al.add(s2);
-
-                    response = gson.toJson(al);
+                    
+                    response = gson.toJson(facade.getProposals());
 
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
@@ -62,12 +55,8 @@ public class SubjectHandler implements HttpHandler {
                         //Simple anti-Martin check :-)
                         throw new IllegalArgumentException("Illegal characters in input");
                     }
-                    // String title, String describtion, String teachers
                     
-                    Subject subject = gson.fromJson(jsonQuery, Subject.class);
-                    
-                    facade.addProposal(subject.getTitle(), subject.getDescription(), 
-                            subject.getTeachers());
+                    facade.addProposal(jsonQuery);
                             
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;
