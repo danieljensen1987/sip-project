@@ -1,6 +1,9 @@
 package dk.cphbusiness.facade;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.entities.Teacher;
@@ -15,6 +18,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class FacadeDBTest {
+
     private Teacher teacher1 = new Teacher("1");
     private Teacher teacher2 = new Teacher("2");
     FacadeDB facade = new FacadeDB();
@@ -22,27 +26,22 @@ public class FacadeDBTest {
     private List<Teacher> teacherList = new ArrayList();
     private List<Teacher> teacherList2 = new ArrayList();
     Gson gson = new Gson();
-    
-    
+
     @Before
-    public void setUp(){
+    public void setUp() {
         teacherList.add(teacher1);
         teacherList.add(teacher2);
-        Collection c1 = new ArrayList();
-        Collection c2 = new ArrayList();
-        Collection c3 = new ArrayList();
-        Collection c4 = new ArrayList();
-        c1.add("Anders");
-        c1.add("Peter");
-        c2.add("Peter");
-        c3.add("Anders");
-        c3.add("Torben");
-        c4.add("Tysker");
-        c4.add("Peter");
-        Subject s1 = new Subject("Android", "1", c1);
-        Subject s2 = new Subject("3DPrint", "1", c2);
-        Subject s3 = new Subject("C#", "1", c3);
-        Subject s4 = new Subject("AI", "1", c4);
+        Subject s1 = new Subject("Android", "1");
+        s1.addTeacher(new Teacher("Anders"));
+        s1.addTeacher(new Teacher("Peter"));
+        Subject s2 = new Subject("3DPrint", "1");
+        s2.addTeacher(new Teacher("Peter"));
+        Subject s3 = new Subject("C#", "1");
+        s3.addTeacher(new Teacher("Anders"));
+        s3.addTeacher(new Teacher("Torben"));
+        Subject s4 = new Subject("AI", "1");
+        s4.addTeacher(new Teacher("Tysker"));
+        s4.addTeacher(new Teacher("Peter"));
         String j1 = gson.toJson(s1);
         String j2 = gson.toJson(s2);
         String j3 = gson.toJson(s3);
@@ -51,13 +50,12 @@ public class FacadeDBTest {
         facade.addProposal(j2);
         facade.addProposal(j3);
         facade.addProposal(j4);
-        
+
         facade.addToFirstRound(j1);
         facade.addToFirstRound(j3);
         facade.addToFirstRound(j4);
         facade.addToFirstRound(j2);
     }
-    
 
     @Test
     public void testCreateStudent() {
@@ -68,39 +66,50 @@ public class FacadeDBTest {
 
     @Test
     public void testCreateTeacher() {
-        assertNotNull(teacher1);        
+        assertNotNull(teacher1);
         String ID = teacher1.getTeacherID();
         assertEquals(ID, "1");
     }
 
     @Test
     public void testCreateSubject() {
-        Collection c = new ArrayList();
-        c.add(new Teacher("Anders"));
-        c.add(new Teacher("Peter"));
-        
-        Subject subject1 = new Subject("testTitle", "testDesc", c);
+        Subject subject1 = new Subject("testTitle", "testDesc");
+        subject1.addTeacher(new Teacher("Anders"));
+        subject1.addTeacher(new Teacher("Peter"));
         String describtion = subject1.getDescription();
-        
+
         assertEquals(subject1.getTeachers().size(), 2);
         assertEquals(subject1.getTitle(), "testTitle");
         assertEquals(describtion, "testDesc");
     }
-    
+
     @Test
-    public void testAddProposal(){
-        facade.addProposal("{'title':'test','description':'1',teachers:{{'name':'Peter'}}}");
-        assertEquals(facade.getProposals().length(), 6);
+    public void testAddProposal() {
+        Subject s1 = new Subject("Android", "1");
+        s1.addTeacher(new Teacher("Anders"));
+        String j1 = gson.toJson(s1);
+        facade.addProposal(j1);
+        
+        String json = facade.getProposals();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        
+        assertEquals(jasonArray.size(), 5);
     }
-    
+
     @Test
-    public void testCreateFirstRoundElectiveSubjects(){
+    public void testCreateFirstRoundElectiveSubjects() {
         facade.addToFirstRound("test");
-        assertEquals(facade.getFirstRound().length(), 6);
+        String json = facade.getFirstRound();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        assertEquals(jasonArray.size(), 5);
     }
-    
+
     @Test
-    public void testFirstRoundSelection(){
+    public void testFirstRoundSelection() {
 //        String available = facade.getFirstRound();
 //        System.out.println(available);
 //        List <Selected> priority = new ArrayList();

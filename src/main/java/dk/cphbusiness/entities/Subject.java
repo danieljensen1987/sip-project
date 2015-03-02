@@ -11,10 +11,9 @@ public class Subject {
     private Collection<Teacher> teachers = new ArrayList();
 //    private String teachers;
 
-    public Subject(String title, String description, Collection teachers) {
+    public Subject(String title, String description) {
         this.title = title;
         this.description = description;
-        this.teachers = teachers;
     }
 
     public String getTitle() {
@@ -23,6 +22,10 @@ public class Subject {
 
     public String getDescription() {
         return description;
+    }
+    
+    public void addTeacher(Teacher t){
+        teachers.add(t);
     }
 
     public Collection<Teacher> getTeachers() {
