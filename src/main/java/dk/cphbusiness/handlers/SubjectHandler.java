@@ -62,12 +62,8 @@ public class SubjectHandler implements HttpHandler {
                         //Simple anti-Martin check :-)
                         throw new IllegalArgumentException("Illegal characters in input");
                     }
-                    // String title, String describtion, String teachers
                     
-                    Subject subject = gson.fromJson(jsonQuery, Subject.class);
-                    
-                    facade.addProposal(subject.getTitle(), subject.getDescription(), 
-                            subject.getTeachers());
+                    facade.addProposal(jsonQuery);
                             
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;

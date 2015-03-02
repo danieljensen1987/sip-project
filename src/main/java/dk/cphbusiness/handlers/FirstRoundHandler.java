@@ -53,11 +53,7 @@ public class FirstRoundHandler implements HttpHandler {
                         //Simple anti-Martin check :-)
                         throw new IllegalArgumentException("Illegal characters in input");
                     }
-                    // String title, String describtion, String teachers
-                    
-                    Selected s = gson.fromJson(jsonQuery, Selected.class);
-                    String title = s.getTitle();
-                    facade.addToFirstRound(title);
+                    facade.addToFirstRound(jsonQuery);
                          
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;
