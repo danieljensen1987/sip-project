@@ -49,6 +49,12 @@ public class SubjectHandler implements HttpHandler {
                 break;
 
             case "POST":
+                try 
+                {
+                    
+                } catch(IllegalArgumentException iae) {
+                    
+                }
                 break;
 
             case "PUT":
