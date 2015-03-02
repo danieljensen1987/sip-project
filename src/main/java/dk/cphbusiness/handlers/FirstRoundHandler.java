@@ -13,13 +13,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectHandler implements HttpHandler {
-
+public class FirstRoundHandler implements HttpHandler {
     private static final boolean dev = false;
     FacadeDB facade;
     private final Gson gson = new Gson();
 
-    public SubjectHandler() {
+    public FirstRoundHandler() {
         facade = FacadeDB.getFacade(false);
         if (dev) {
 //            facade.createTestData();
@@ -34,21 +33,12 @@ public class SubjectHandler implements HttpHandler {
 
         switch (method) {
             case "GET":
-                try {
-                    System.out.println("Du er her!");
-                    Student s2 = new Student("1");
-                    Student s1 = new Student("2");
-
-                    List al = new ArrayList();
-                    al.add(s1);
-                    al.add(s2);
-
-                    response = gson.toJson(al);
-
-                } catch (NumberFormatException nfe) {
-                    response = "Id is not a number";
-                    statusCode = 404;
-                }
+//                try {
+//
+//                } catch (NumberFormatException nfe) {
+//                    response = "Id is not a number";
+//                    statusCode = 404;
+//                }
                 break;
 
             case "POST":
@@ -64,10 +54,8 @@ public class SubjectHandler implements HttpHandler {
                     }
                     // String title, String describtion, String teachers
                     
-                    Subject subject = gson.fromJson(jsonQuery, Subject.class);
                     
-                    facade.addProposal(subject.getTitle(), subject.getDescription(), 
-                            subject.getTeachers());
+                    
                             
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;
