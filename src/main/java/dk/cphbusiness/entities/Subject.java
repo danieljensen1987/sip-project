@@ -16,9 +16,9 @@ import java.util.List;
 public class Subject {
     private String title;
     private String description;
-    private List <Teacher> teachers = new ArrayList();
+    private String teachers;
 
-    public Subject(String title, String description, List teachers) {
+    public Subject(String title, String description, String teachers) {
         this.title = title;
         this.description = description;
         this.teachers = teachers;
@@ -32,7 +32,7 @@ public class Subject {
         return description;
     }
 
-    public List<Teacher> getTeachers() {
+    public String getTeachers() {
         return teachers;
     }    
   
