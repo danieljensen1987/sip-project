@@ -12,6 +12,7 @@ public class FacadeDB implements IFacade {
 //    EntityManager em = emf.createEntityManager();
     private List<Subject> proposedSubjects = new ArrayList();
     private List firstRound = new ArrayList();
+    private final Gson gson = new Gson();
 
     public static FacadeDB getFacade(boolean b) {
         if (true) {
@@ -21,20 +22,19 @@ public class FacadeDB implements IFacade {
     }
 
     @Override
-    public void addProposal(String title, String describtion, String teachers) {
-        Subject subject = new Subject(title, describtion, teachers);
+    public void addProposal(String json) {
+        Subject subject = gson.fromJson(json, Subject.class);
         proposedSubjects.add(subject);
     }
 
     @Override
     public String getProposals() {
-        Gson gson = new Gson();
+        
         return gson.toJson(proposedSubjects);
     }
 
     @Override
     public String getFirstRound() {
-        Gson gson = new Gson();
         return gson.toJson(firstRound);
     }
 

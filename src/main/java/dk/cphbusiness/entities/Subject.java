@@ -1,24 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dk.cphbusiness.entities;
 
 import dk.cphbusiness.entities.Teacher;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-/**
- *
- * @author Søren
- */
 public class Subject {
     private String title;
     private String description;
-    private String teachers;
+    private Collection<Teacher> teachers = new ArrayList();
+//    private String teachers;
 
-    public Subject(String title, String description, String teachers) {
+    public Subject(String title, String description, Collection teachers) {
         this.title = title;
         this.description = description;
         this.teachers = teachers;
@@ -32,7 +25,7 @@ public class Subject {
         return description;
     }
 
-    public String getTeachers() {
+    public Collection<Teacher> getTeachers() {
         return teachers;
     }
 
@@ -40,10 +33,8 @@ public class Subject {
     public String toString() {
         return "Subject{" + "title=" + title
                 + ", description=" + description
-                + ", teachers=" + teachers + '}';
+                + ", teachers={" + teachers + "}"
+                + "}";
     }
-    
-    
-  
 }
 
