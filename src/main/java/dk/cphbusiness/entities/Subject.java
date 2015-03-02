@@ -34,7 +34,16 @@ public class Subject {
 
     public String getTeachers() {
         return teachers;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" + "title=" + title
+                + ", description=" + description
+                + ", teachers=" + teachers + '}';
+    }
+    
+    
   
 }
 

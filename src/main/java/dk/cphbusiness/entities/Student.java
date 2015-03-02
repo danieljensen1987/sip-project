@@ -10,5 +10,12 @@ public class Student {
     public String getStudentID() {
         return studentID;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" + "studentID=" + studentID + '}';
+    }
+    
+    
     
 }
