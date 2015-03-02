@@ -4,6 +4,7 @@ import dk.cphbusiness.entities.Student;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import dk.cphbusiness.handlers.FirstRoundHandler;
 import dk.cphbusiness.handlers.SubjectHandler;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,6 +21,7 @@ public class Server {
     public void run() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(ip, port), 0);
         server.createContext("/data", new SubjectHandler());
+        server.createContext("/addRoundOne", new FirstRoundHandler());
 //        server.createContext(filesUri, new HandlerFileServer());
         server.start();
         System.out.println("Server started, listening on port: " + port);
