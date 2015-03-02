@@ -2,14 +2,9 @@ package dk.cphbusiness.server;
 
 import dk.cphbusiness.entities.Student;
 import com.google.gson.Gson;
-import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import dk.cphbusiness.handlers.SubjectHandler;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
