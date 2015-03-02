@@ -3,6 +3,7 @@ package dk.cphbusiness.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Student;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.facade.FacadeDB;
@@ -54,9 +55,10 @@ public class FirstRoundHandler implements HttpHandler {
                     }
                     // String title, String describtion, String teachers
                     
-                    
-                    
-                            
+                    Selected s = gson.fromJson(jsonQuery, Selected.class);
+                    String title = s.getTitle();
+                    facade.addToFirstRound(title);
+                         
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;
                     response = iae.getMessage();
