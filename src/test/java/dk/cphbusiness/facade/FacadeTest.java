@@ -119,58 +119,16 @@ public class FacadeTest {
 
     @Test
     public void testFirstRoundSelection() {
-        
-        
-        String available = facade.getAvailableCourses();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(available);
-        JsonArray jasonArray = element.getAsJsonArray();
-        
-        Subject sub1 = gson.fromJson(jasonArray.get(0), Subject.class);
-        Subject sub2 = gson.fromJson(jasonArray.get(1), Subject.class);
-        Subject sub3 = gson.fromJson(jasonArray.get(2), Subject.class);
-        Subject sub4 = gson.fromJson(jasonArray.get(3), Subject.class);
-        Selected sel1 = new Selected(sub1, 1);
-        Selected sel2 = new Selected(sub2, 1);
-        Selected sel3 = new Selected(sub3, 2);
-        Selected sel4 = new Selected(sub4, 2);
-        
-        
+        Selected sel1 = new Selected(new Subject("Android", "test"), 1);
+         
         facade.addToFirstRound(gson.toJson(sel1));
-        facade.addToFirstRound(gson.toJson(sel2));
-        facade.addToFirstRound(gson.toJson(sel3));
-        facade.addToFirstRound(gson.toJson(sel4));
         
         String firstRound = facade.getFirstRound();
-        JsonParser parser2 = new JsonParser();
-        JsonElement element2 = parser2.parse(firstRound);
-        JsonArray jasonArray2 = element2.getAsJsonArray();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(firstRound);
+        JsonArray jasonArray = element.getAsJsonArray();
         
-        assertEquals(jasonArray2.size(), 4);
+        assertEquals(jasonArray.size(), 1);
         
-//        System.out.println(sub);
-//        Selected sel = new Selected(sub, 1);
-//        priority.add(sel);
-//        
-//        
-//        
-//        JsonParser parser = new JsonParser();
-//        JsonElement element = parser.parse(json);
-//        JsonArray jasonArray = element.getAsJsonArray();
-//        System.out.println(jasonArray);
-//        
-//        List <Selected> priority = new ArrayList();
-//        Selected s1 = new Selected(jasonArray.get(0), 1);
-//        Selected s2 = new Selected(jasonArray.get(1).toString(), 2);
-//        Selected s3 = new Selected(jasonArray.get(2).toString(), 1);
-//        Selected s4 = new Selected(jasonArray.get(3).toString(), 2);
-//        
-//        
-//        priority.add(s1);
-//        priority.add(s2);
-//        priority.add(s3);
-//        priority.add(s4);
-//        System.out.println(gson.toJson(priority));
-////        assertEquals(priority.size(), 4);
     }
 }
