@@ -97,19 +97,19 @@ public class FacadeTest {
         assertEquals(jasonArray.size(), 5);
     }
 
-//    @Test
-//    public void testFirstRoundSelection() {
-//        Subject subject = new Subject("Android", "test", "cc");
-//        Selected sel = new Selected(subject, 1);
-//        
-//        facade.addToFirstRound(gson.toJson(sel));
-//        
-//        String firstRound = facade.getFirstRound();
-//        JsonParser parser = new JsonParser();
-//        JsonElement element = parser.parse(firstRound);
-//        JsonArray jasonArray = element.getAsJsonArray();
-//        
-//        assertEquals(jasonArray.size(), 1);
-//        
-//    }
+    @Test
+    public void testFirstRoundSelection() {
+        Subject subject = new Subject("Android", "test", "cc");
+        Selected sel = new Selected(subject, 1);
+        
+        facade.addToFirstRound(gson.toJson(sel));
+        
+        String firstRound = facade.getFirstRound();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(firstRound);
+        JsonArray jasonArray = element.getAsJsonArray();
+        
+        assertEquals(jasonArray.size(), 1);
+        
+    }
 }
