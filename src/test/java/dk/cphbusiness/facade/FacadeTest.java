@@ -19,57 +19,36 @@ import org.junit.Before;
 
 public class FacadeTest {
 
-    private Teacher teacher1 = new Teacher("1");
-    private Teacher teacher2 = new Teacher("2");
     Facade facade = new Facade();
-    public Student student = new Student("1");
-    private List<Teacher> teacherList = new ArrayList();
-    private List<Teacher> teacherList2 = new ArrayList();
     private List<Selected> priority = new ArrayList();
     Gson gson = new Gson();
 
     @Before
     public void setUp() {
-        teacherList.add(teacher1);
-        teacherList.add(teacher2);
-        Subject s1 = new Subject("Android", "1");
-        s1.addTeacher(new Teacher("Anders"));
-        s1.addTeacher(new Teacher("Peter"));
-        Subject s2 = new Subject("3DPrint", "1");
-        s2.addTeacher(new Teacher("Peter"));
-        Subject s3 = new Subject("C#", "1");
-        s3.addTeacher(new Teacher("Anders"));
-        s3.addTeacher(new Teacher("Torben"));
-        Subject s4 = new Subject("AI", "1");
-        s4.addTeacher(new Teacher("Tysker"));
-        s4.addTeacher(new Teacher("Peter"));
-        String j1 = gson.toJson(s1);
-        String j2 = gson.toJson(s2);
-        String j3 = gson.toJson(s3);
-        String j4 = gson.toJson(s4);
-        facade.addProposal(j1);
-        facade.addProposal(j2);
-        facade.addProposal(j3);
-        facade.addProposal(j4);
+        facade.addProposal(gson.toJson(new Subject("Android", "make good apps", "PELO")));
+        facade.addProposal(gson.toJson(new Subject("C#", "make more apps", "TOR")));
+        facade.addProposal(gson.toJson(new Subject("Arduino", "what", "TOG")));
+        facade.addProposal(gson.toJson(new Subject("HASKELL", "be brainy", "Tysker")));
+        
 
-        facade.addToAvailableCourses(j1);
-        facade.addToAvailableCourses(j3);
-        facade.addToAvailableCourses(j4);
-        facade.addToAvailableCourses(j2);
+        facade.addToAvailableCourses(gson.toJson(new Subject("Android", "make good apps", "PELO")));
+        facade.addToAvailableCourses(gson.toJson(new Subject("C#", "make more apps", "TOR")));
+        facade.addToAvailableCourses(gson.toJson(new Subject("Arduino", "what", "TOG")));
+        facade.addToAvailableCourses(gson.toJson(new Subject("HASKELL", "be brainy", "Tysker")));
     }
 
     @Test
     public void testCreateStudent() {
-        assertNotNull(student);
-        String StudID = student.getStudentID();
-        assertEquals(StudID, "1");
+        Student s = new Student("aa");
+        assertNotNull(s);
+        assertEquals(s.getStudentID(), "aa");
     }
 
     @Test
     public void testCreateTeacher() {
-        assertNotNull(teacher1);
-        String ID = teacher1.getTeacherID();
-        assertEquals(ID, "1");
+        Teacher t = new Teacher("AKA");
+        assertNotNull(t);
+        assertEquals(t.getTeacherID(), "AKA");
     }
     
     @Test
@@ -80,31 +59,24 @@ public class FacadeTest {
 
     @Test
     public void testCreateSubject() {
-        Subject subject1 = new Subject("testTitle", "testDesc");
-        subject1.addTeacher(new Teacher("Anders"));
-        subject1.addTeacher(new Teacher("Peter"));
-        String describtion = subject1.getDescription();
-
-        assertEquals(subject1.getTeachers().size(), 2);
-        assertEquals(subject1.getTitle(), "testTitle");
-        assertEquals(describtion, "testDesc");
+        Subject s = new Subject("testTitle", "testDesc", "aka");
+        assertEquals(s.getTeacher(), "aka");
+        assertEquals(s.getTitle(), "testTitle");
+        assertEquals(s.getDescription(), "testDesc");
     }
     
     @Test
     public void testCreateSelected(){
-        Subject sub1 = new Subject("Android", "test");
-        Selected sel1 = new Selected(sub1, 1);
-         
-        assertEquals(sel1.getSubject(), sub1);
+        Subject s = new Subject("Android", "test", "AKA");
+        Selected sel1 = new Selected(s, 1);
+        assertEquals(sel1.getSubject(), s);
         assertEquals(sel1.getPriority(), 1);
     }
 
     @Test
     public void testAddProposal() {
-        Subject s1 = new Subject("Android", "1");
-        s1.addTeacher(new Teacher("Anders"));
-        String j1 = gson.toJson(s1);
-        facade.addProposal(j1);
+        Subject s = new Subject("Android", "1", "aa");
+        facade.addProposal(gson.toJson(s));
         
         String json = facade.getProposals();
         JsonParser parser = new JsonParser();
@@ -116,9 +88,8 @@ public class FacadeTest {
 
     @Test
     public void testCreateFirstRoundElectiveSubjects() {
-        Subject subject = new Subject("test", "test");
-        subject.addTeacher(new Teacher("test teacher"));
-        facade.addToAvailableCourses(gson.toJson(subject));
+        Subject s = new Subject("test", "test", "bb");
+        facade.addToAvailableCourses(gson.toJson(s));
         String json = facade.getAvailableCourses();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
@@ -128,10 +99,10 @@ public class FacadeTest {
 
     @Test
     public void testFirstRoundSelection() {
-        Subject sub1 = new Subject("Android", "test");
-        Selected sel1 = new Selected(sub1, 1);
+        Subject subject = new Subject("Android", "test", "cc");
+        Selected sel = new Selected(subject, 1);
         
-        facade.addToFirstRound(gson.toJson(sel1));
+        facade.addToFirstRound(gson.toJson(sel));
         
         String firstRound = facade.getFirstRound();
         JsonParser parser = new JsonParser();

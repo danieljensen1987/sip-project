@@ -1,19 +1,14 @@
 package dk.cphbusiness.entities;
 
-import dk.cphbusiness.entities.Teacher;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public class Subject {
     private String title;
     private String description;
-    private Collection<Teacher> teachers = new ArrayList();
-//    private String teachers;
+    private String teacher;
 
-    public Subject(String title, String description) {
+    public Subject(String title, String description, String teacher) {
         this.title = title;
         this.description = description;
+        this.teacher = teacher;
     }
 
     public String getTitle() {
@@ -23,13 +18,9 @@ public class Subject {
     public String getDescription() {
         return description;
     }
-    
-    public void addTeacher(Teacher t){
-        teachers.add(t);
-    }
 
-    public Collection<Teacher> getTeachers() {
-        return teachers;
+    public String getTeacher() {
+        return teacher;
     }
 }
 
