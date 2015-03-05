@@ -36,7 +36,7 @@ public class SubjectHandler implements HttpHandler {
             case "GET":
                 try {
                     
-                    response = gson.toJson(facade.getProposals());
+                    response = facade.getProposals();
 
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
