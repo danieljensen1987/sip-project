@@ -10,13 +10,4 @@ public class Teacher {
     public String getTeacherID() {
         return teacherID;
     }
-
-    @Override
-    public String toString() {
-         return "Teacher{" + "teacherID=" + teacherID + '}';
-    }
-    
-    
-    
-    
 }

@@ -31,13 +31,5 @@ public class Subject {
     public Collection<Teacher> getTeachers() {
         return teachers;
     }
-
-    @Override
-    public String toString() {
-        return "Subject{" + "title=" + title
-                + ", description=" + description
-                + ", teachers={" + teachers + "}"
-                + "}";
-    }
 }
 

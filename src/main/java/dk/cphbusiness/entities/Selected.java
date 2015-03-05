@@ -2,11 +2,11 @@ package dk.cphbusiness.entities;
 
 public class Selected {
     
-    String title;
+    Subject subject;
     int priority;
 
-    public Selected(String title, int priority) {
-        this.title = title;
+    public Selected(Subject subject, int priority) {
+        this.subject = subject;
         this.priority = priority;
     }
     
@@ -14,10 +14,7 @@ public class Selected {
 //        this.title = title;
 //    }
 
-    public String getTitle() {
-        return title;
+    public Subject getSubject() {
+        return subject;
     }
-    
-    
-
 }

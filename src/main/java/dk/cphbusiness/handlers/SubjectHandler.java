@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dk.cphbusiness.entities.Student;
 import dk.cphbusiness.entities.Subject;
-import dk.cphbusiness.facade.FacadeDB;
+import dk.cphbusiness.facade.Facade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,11 +16,11 @@ import java.util.List;
 public class SubjectHandler implements HttpHandler {
 
     private static final boolean dev = false;
-    FacadeDB facade;
+    Facade facade;
     private final Gson gson = new Gson();
 
     public SubjectHandler() {
-        facade = FacadeDB.getFacade(false);
+        facade = Facade.getFacade(false);
         if (dev) {
 //            facade.createTestData();
         }

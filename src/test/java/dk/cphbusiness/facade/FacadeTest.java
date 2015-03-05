@@ -17,14 +17,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
-public class FacadeDBTest {
+public class FacadeTest {
 
     private Teacher teacher1 = new Teacher("1");
     private Teacher teacher2 = new Teacher("2");
-    FacadeDB facade = new FacadeDB();
+    Facade facade = new Facade();
     public Student student = new Student("1");
     private List<Teacher> teacherList = new ArrayList();
     private List<Teacher> teacherList2 = new ArrayList();
+    private List<Selected> priority = new ArrayList();
     Gson gson = new Gson();
 
     @Before
@@ -70,6 +71,12 @@ public class FacadeDBTest {
         String ID = teacher1.getTeacherID();
         assertEquals(ID, "1");
     }
+    
+    @Test
+    public void testGetFacade(){
+        Facade f = Facade.getFacade(false);
+        assertNotNull(f);
+    }
 
     @Test
     public void testCreateSubject() {
@@ -100,7 +107,9 @@ public class FacadeDBTest {
 
     @Test
     public void testCreateFirstRoundElectiveSubjects() {
-        facade.addToFirstRound("test");
+        Subject subject = new Subject("test", "test");
+        subject.addTeacher(new Teacher("test teacher"));
+        facade.addToFirstRound(gson.toJson(subject));
         String json = facade.getFirstRound();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
@@ -110,19 +119,52 @@ public class FacadeDBTest {
 
     @Test
     public void testFirstRoundSelection() {
-//        String available = facade.getFirstRound();
-//        System.out.println(available);
+        
+        
+        String available = facade.getFirstRound();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(available);
+        JsonArray jasonArray = element.getAsJsonArray();
+        
+        Subject sub1 = gson.fromJson(jasonArray.get(0), Subject.class);
+        Subject sub2 = gson.fromJson(jasonArray.get(1), Subject.class);
+        Subject sub3 = gson.fromJson(jasonArray.get(2), Subject.class);
+        Subject sub4 = gson.fromJson(jasonArray.get(3), Subject.class);
+        Selected sel1 = new Selected(sub1, 1);
+        Selected sel2 = new Selected(sub2, 1);
+        Selected sel3 = new Selected(sub3, 2);
+        Selected sel4 = new Selected(sub4, 2);
+        priority.add(sel1);
+        priority.add(sel2);
+        priority.add(sel3);
+        priority.add(sel4);
+        
+        System.out.println(priority);
+        assertEquals(priority.size(), 4);
+        
+//        System.out.println(sub);
+//        Selected sel = new Selected(sub, 1);
+//        priority.add(sel);
+//        
+//        
+//        
+//        JsonParser parser = new JsonParser();
+//        JsonElement element = parser.parse(json);
+//        JsonArray jasonArray = element.getAsJsonArray();
+//        System.out.println(jasonArray);
+//        
 //        List <Selected> priority = new ArrayList();
-//        Selected s1 = new Selected(available.get(0).toString(), 1);
-//        Selected s2 = new Selected(available.get(1).toString(), 2);
-//        Selected s3 = new Selected(available.get(2).toString(), 1);
-//        Selected s4 = new Selected(available.get(3).toString(), 2);
+//        Selected s1 = new Selected(jasonArray.get(0), 1);
+//        Selected s2 = new Selected(jasonArray.get(1).toString(), 2);
+//        Selected s3 = new Selected(jasonArray.get(2).toString(), 1);
+//        Selected s4 = new Selected(jasonArray.get(3).toString(), 2);
+//        
 //        
 //        priority.add(s1);
 //        priority.add(s2);
 //        priority.add(s3);
 //        priority.add(s4);
-//        
-//        assertEquals(priority.size(), 4);
+//        System.out.println(gson.toJson(priority));
+////        assertEquals(priority.size(), 4);
     }
 }
