@@ -52,10 +52,10 @@ public class FacadeTest {
         facade.addProposal(j3);
         facade.addProposal(j4);
 
-        facade.addToFirstRound(j1);
-        facade.addToFirstRound(j3);
-        facade.addToFirstRound(j4);
-        facade.addToFirstRound(j2);
+        facade.addToAvailableCourses(j1);
+        facade.addToAvailableCourses(j3);
+        facade.addToAvailableCourses(j4);
+        facade.addToAvailableCourses(j2);
     }
 
     @Test
@@ -109,8 +109,8 @@ public class FacadeTest {
     public void testCreateFirstRoundElectiveSubjects() {
         Subject subject = new Subject("test", "test");
         subject.addTeacher(new Teacher("test teacher"));
-        facade.addToFirstRound(gson.toJson(subject));
-        String json = facade.getFirstRound();
+        facade.addToAvailableCourses(gson.toJson(subject));
+        String json = facade.getAvailableCourses();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
         JsonArray jasonArray = element.getAsJsonArray();
@@ -121,7 +121,7 @@ public class FacadeTest {
     public void testFirstRoundSelection() {
         
         
-        String available = facade.getFirstRound();
+        String available = facade.getAvailableCourses();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(available);
         JsonArray jasonArray = element.getAsJsonArray();
@@ -134,13 +134,19 @@ public class FacadeTest {
         Selected sel2 = new Selected(sub2, 1);
         Selected sel3 = new Selected(sub3, 2);
         Selected sel4 = new Selected(sub4, 2);
-        priority.add(sel1);
-        priority.add(sel2);
-        priority.add(sel3);
-        priority.add(sel4);
         
-        System.out.println(priority);
-        assertEquals(priority.size(), 4);
+        
+        facade.addToFirstRound(gson.toJson(sel1));
+        facade.addToFirstRound(gson.toJson(sel2));
+        facade.addToFirstRound(gson.toJson(sel3));
+        facade.addToFirstRound(gson.toJson(sel4));
+        
+        String firstRound = facade.getFirstRound();
+        JsonParser parser2 = new JsonParser();
+        JsonElement element2 = parser2.parse(firstRound);
+        JsonArray jasonArray2 = element2.getAsJsonArray();
+        
+        assertEquals(jasonArray2.size(), 4);
         
 //        System.out.println(sub);
 //        Selected sel = new Selected(sub, 1);
