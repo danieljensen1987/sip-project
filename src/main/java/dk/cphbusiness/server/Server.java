@@ -34,38 +34,4 @@ public class Server {
         }
         new Server().run();
     }
-
-    class HandlerPerson implements HttpHandler {
-
-        @Override
-        public void handle(com.sun.net.httpserver.HttpExchange he) throws IOException {
-            String response = "";
-            int status = 200;
-            String method = he.getRequestMethod().toUpperCase();
-            switch (method) {
-
-                //Used to get existing data. 
-                case "GET":
-                    try {
-                        System.out.println("Du er her!");
-                        Student s1 = new Student("2");
-                        
-                        List al = new ArrayList();
-                        al.add(s1);
-                        
-                        response = gson.toJson(al);
-
-                    } catch (NumberFormatException nfe) {
-                        response = "Id is not a number";
-                        status = 404;
-                    }
-                    break;
-            }
-            he.getResponseHeaders().add("Content-Type", "application/json");
-            he.sendResponseHeaders(status, 0);
-            try (OutputStream os = he.getResponseBody()) {
-                os.write(response.getBytes());
-            }
-        }
-    }
 }

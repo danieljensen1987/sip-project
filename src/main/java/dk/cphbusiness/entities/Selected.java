@@ -9,12 +9,12 @@ public class Selected {
         this.subject = subject;
         this.priority = priority;
     }
-    
-//    public Selected(String title){
-//        this.title = title;
-//    }
 
     public Subject getSubject() {
         return subject;
     }
+
+    public int getPriority() {
+        return priority;
+    }  
 }

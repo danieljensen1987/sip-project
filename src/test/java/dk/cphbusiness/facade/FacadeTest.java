@@ -89,6 +89,15 @@ public class FacadeTest {
         assertEquals(subject1.getTitle(), "testTitle");
         assertEquals(describtion, "testDesc");
     }
+    
+    @Test
+    public void testCreateSelected(){
+        Subject sub1 = new Subject("Android", "test");
+        Selected sel1 = new Selected(sub1, 1);
+         
+        assertEquals(sel1.getSubject(), sub1);
+        assertEquals(sel1.getPriority(), 1);
+    }
 
     @Test
     public void testAddProposal() {
@@ -119,8 +128,9 @@ public class FacadeTest {
 
     @Test
     public void testFirstRoundSelection() {
-        Selected sel1 = new Selected(new Subject("Android", "test"), 1);
-         
+        Subject sub1 = new Subject("Android", "test");
+        Selected sel1 = new Selected(sub1, 1);
+        
         facade.addToFirstRound(gson.toJson(sel1));
         
         String firstRound = facade.getFirstRound();
