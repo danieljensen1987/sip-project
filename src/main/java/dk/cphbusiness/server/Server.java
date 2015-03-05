@@ -1,6 +1,5 @@
 package dk.cphbusiness.server;
 
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import dk.cphbusiness.handlers.FirstRoundHandler;
 import dk.cphbusiness.handlers.SubjectHandler;
