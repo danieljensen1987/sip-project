@@ -23,9 +23,11 @@ public class Facade implements IFacade {
 
     @Override
     public void addProposal(String json) {
+        System.out.println("");
         Subject subject = gson.fromJson(json, Subject.class);
-        System.out.println("Størrelse: " + proposedSubjects.size());
         proposedSubjects.add(subject);
+        System.out.println("Proposed: " + proposedSubjects.toString());
+        System.out.println("Størrelse: " + proposedSubjects.size());
     }
 
     @Override
