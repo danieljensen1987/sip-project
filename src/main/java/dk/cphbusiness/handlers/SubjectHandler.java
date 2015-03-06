@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dk.cphbusiness.entities.Student;
 import dk.cphbusiness.entities.Subject;
+import dk.cphbusiness.exceptions.MinimumCharacterException;
 import dk.cphbusiness.facade.Facade;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SubjectHandler implements HttpHandler {
 
@@ -35,7 +38,7 @@ public class SubjectHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 try {
-                    
+
                     response = facade.getProposals();
 
                 } catch (NumberFormatException nfe) {
@@ -45,26 +48,20 @@ public class SubjectHandler implements HttpHandler {
                 break;
 
             case "POST":
-                try 
-                {
+                try {
                     InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
                     BufferedReader br = new BufferedReader(isr);
                     String jsonQuery = br.readLine();
-                    if (jsonQuery.contains("<") || jsonQuery.contains(">"))
-                    {
-                        //Simple anti-Martin check :-)
-                        throw new IllegalArgumentException("Illegal characters in input");
-                    }
-                    
+
                     facade.addProposal(jsonQuery);
-                            
-                } catch(IllegalArgumentException iae) {
+
+                } catch (MinimumCharacterException mce) {
                     statusCode = 200;
-                    response = iae.getMessage();
+                    response = mce.getMessage();
                 } catch (IOException e) {
                     statusCode = 500;
                     response = "Internal Server Problem";
-                }        
+                }
                 break;
 
             case "PUT":

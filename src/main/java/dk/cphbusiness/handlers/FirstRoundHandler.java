@@ -3,16 +3,11 @@ package dk.cphbusiness.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dk.cphbusiness.entities.Selected;
-import dk.cphbusiness.entities.Student;
-import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.facade.Facade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FirstRoundHandler implements HttpHandler {
     private static final boolean dev = false;
@@ -35,7 +30,7 @@ public class FirstRoundHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 try {
-                    response = facade.getAvailableCourses();
+                    response = facade.getFirstRoundSubjects();
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
                     statusCode = 404;
@@ -53,7 +48,7 @@ public class FirstRoundHandler implements HttpHandler {
                         //Simple anti-Martin check :-)
                         throw new IllegalArgumentException("Illegal characters in input");
                     }
-                    facade.addToAvailableCourses(jsonQuery);
+                    facade.addSubjectToFirstRound(jsonQuery);
                          
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;

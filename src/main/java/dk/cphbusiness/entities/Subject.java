@@ -1,9 +1,9 @@
 package dk.cphbusiness.entities;
 
 public class Subject {
-    private String title;
-    private String description;
-    private String teacher;
+    private final String title;
+    private final String description;
+    private final String teacher;
 
     public Subject(String title, String description, String teacher) {
         this.title = title;

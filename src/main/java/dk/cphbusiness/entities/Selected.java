@@ -1,17 +1,11 @@
 package dk.cphbusiness.entities;
 
-public class Selected {
-    
-    Subject subject;
+public class Selected extends Subject{
     int priority;
 
-    public Selected(Subject subject, int priority) {
-        this.subject = subject;
+    public Selected(String title, String description, String teacher, int priority) {
+        super(title, description, teacher);
         this.priority = priority;
-    }
-
-    public Subject getSubject() {
-        return subject;
     }
 
     public int getPriority() {

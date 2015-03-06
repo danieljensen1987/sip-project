@@ -3,6 +3,7 @@ package dk.cphbusiness.facade;
 import com.google.gson.Gson;
 import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Subject;
+import dk.cphbusiness.exceptions.MinimumCharacterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class Facade implements IFacade {
 
     private static Facade facade = new Facade();
     private List<Subject> proposedSubjects = new ArrayList();
-    private List <Subject>availableCourses = new ArrayList();
-    private List <Selected>priority = new ArrayList();
+    private List<Subject> firstRoundSubjects = new ArrayList();
+    private List<Selected> firstRound = new ArrayList();
     private final Gson gson = new Gson();
 
     public static Facade getFacade(boolean b) {
@@ -22,12 +23,18 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addProposal(String json) {
-        System.out.println("");
-        Subject subject = gson.fromJson(json, Subject.class);
-        proposedSubjects.add(subject);
-        System.out.println("Proposed: " + proposedSubjects.toString());
-        System.out.println("Størrelse: " + proposedSubjects.size());
+    public void addProposal(String json) throws MinimumCharacterException {
+        try {
+            Subject subject = gson.fromJson(json, Subject.class);
+            if (subject.getTitle() == null || subject.getTitle().length() < 1) {
+                throw new MinimumCharacterException("Title must be atleast 2 characters long");
+
+            }
+            proposedSubjects.add(subject);
+        } catch(NullPointerException npe){
+            throw new NullPointerException("SUBJECT IS NULL");
+        }
+
     }
 
     @Override
@@ -36,26 +43,29 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addToAvailableCourses(String json) {
-        Subject subject = gson.fromJson(json, Subject.class);
-        availableCourses.add(subject);
+    public void addSubjectToFirstRound(String json) {
+        try{
+            Subject subject = gson.fromJson(json, Subject.class);
+            firstRoundSubjects.add(subject);
+        } catch(NullPointerException npe){
+            throw new NullPointerException("SUBJECT IS NULL");
+        }
     }
-    
+
     @Override
-    public String getAvailableCourses() {
-        return gson.toJson(availableCourses);
+    public String getFirstRoundSubjects() {
+        return gson.toJson(firstRoundSubjects);
     }
 
     @Override
     public void addToFirstRound(String json) {
-        Selected s1 = gson.fromJson(json, Selected.class);
-        priority.add(s1);
+        Selected s = gson.fromJson(json, Selected.class);
+        firstRound.add(s);
     }
 
     @Override
     public String getFirstRound() {
-        return gson.toJson(priority);
+        return gson.toJson(firstRound);
     }
-    
-    
+
 }
