@@ -35,7 +35,7 @@ public class FirstRoundHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 try {
-                    response = facade.getFirstRound();
+                    response = facade.getAvailableCourses();
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
                     statusCode = 404;
@@ -53,7 +53,7 @@ public class FirstRoundHandler implements HttpHandler {
                         //Simple anti-Martin check :-)
                         throw new IllegalArgumentException("Illegal characters in input");
                     }
-                    facade.addToFirstRound(jsonQuery);
+                    facade.addToAvailableCourses(jsonQuery);
                          
                 } catch(IllegalArgumentException iae) {
                     statusCode = 200;
