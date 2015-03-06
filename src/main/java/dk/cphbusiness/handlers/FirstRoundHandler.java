@@ -34,12 +34,12 @@ public class FirstRoundHandler implements HttpHandler {
 
         switch (method) {
             case "GET":
-//                try {
-//
-//                } catch (NumberFormatException nfe) {
-//                    response = "Id is not a number";
-//                    statusCode = 404;
-//                }
+                try {
+                    response = facade.getFirstRound();
+                } catch (NumberFormatException nfe) {
+                    response = "Id is not a number";
+                    statusCode = 404;
+                }
                 break;
 
             case "POST":
