@@ -9,6 +9,7 @@ import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.entities.Teacher;
 import dk.cphbusiness.entities.Student;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
+import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -36,14 +37,14 @@ public class FacadeTest {
         assertNotNull(s);
         assertEquals(s.getStudentID(), "aa");
     }
-    
+
     @Test
     public void testCreateTeacher() {
         Teacher t = new Teacher("AKA");
         assertNotNull(t);
         assertEquals(t.getTeacherID(), "AKA");
     }
-    
+
     @Test
     public void testCreateSubject() {
         Subject s = new Subject("testTitle", "testDesc", "aka");
@@ -51,7 +52,7 @@ public class FacadeTest {
         assertEquals(s.getTitle(), "testTitle");
         assertEquals(s.getDescription(), "testDesc");
     }
-    
+
     @Test
     public void testAddProposal() throws MinimumCharacterException {
         Subject s = new Subject("Android", "1", "aa");
@@ -62,20 +63,32 @@ public class FacadeTest {
         JsonArray jasonArray = element.getAsJsonArray();
         assertEquals(jasonArray.size(), 5);
     }
-    
-    @Test (expected = NullPointerException.class)
+
+    @Test(expected = NullPointerException.class)
     public void testAddProposalIsNull() throws MinimumCharacterException {
         facade.addProposal(null);
     }
-    
-    @Test (expected = MinimumCharacterException.class)
+
+    @Test(expected = MinimumCharacterException.class)
     public void testAddProposalTitleIsNull() throws MinimumCharacterException {
         Subject s = new Subject(null, "1", "aa");
         facade.addProposal(gson.toJson(s));
     }
-    
+
+    @Test(expected = MinimumCharacterException.class)
+    public void testAddProposalDescriptionIsNull() throws MinimumCharacterException {
+        Subject s = new Subject("c#", null, "aa");
+        facade.addProposal(gson.toJson(s));
+    }
+
+    @Test(expected = MinimumCharacterException.class)
+    public void testAddProposalTeacherIsNull() throws MinimumCharacterException {
+        Subject s = new Subject("c#", "bb", null);
+        facade.addProposal(gson.toJson(s));
+    }
+
     @Test
-    public void testAddSubjectToFirstRound() throws MinimumCharacterException{
+    public void testAddSubjectToFirstRound() throws MinimumCharacterException {
         Subject s = new Subject("test", "test", "bb");
         facade.addSubjectToFirstRound(gson.toJson(s));
         String json = facade.getFirstRoundSubjects();
@@ -84,20 +97,38 @@ public class FacadeTest {
         JsonArray jasonArray = element.getAsJsonArray();
         assertEquals(jasonArray.size(), 5);
     }
-    
-//    @Test(expected = NullPointerException.class)
-//    public void testAddSubjectToFirstRoundIsNull() throws MinimumCharacterException{
-//        facade.addSubjectToFirstRound(null);
-//    }
-    
+
+    @Test(expected = NullPointerException.class)
+    public void testAddSubjectToFirstRoundIsNull() throws MinimumCharacterException {
+        facade.addSubjectToFirstRound(null);
+    }
+
+    @Test(expected = MinimumCharacterException.class)
+    public void testAddSubjectToFirstRoundTitleIsNull() throws MinimumCharacterException {
+        Subject s = new Subject(null, "1", "aa");
+        facade.addSubjectToFirstRound(gson.toJson(s));
+    }
+
+    @Test(expected = MinimumCharacterException.class)
+    public void testAddSubjectToFirstRoundDescriptionIsNull() throws MinimumCharacterException {
+        Subject s = new Subject("c#", null, "aa");
+        facade.addSubjectToFirstRound(gson.toJson(s));
+    }
+
+    @Test(expected = MinimumCharacterException.class)
+    public void testAddSubjectToFirstRoundTeacherIsNull() throws MinimumCharacterException {
+        Subject s = new Subject("c#", "bb", null);
+        facade.addSubjectToFirstRound(gson.toJson(s));
+    }
+
     @Test
-    public void testGetFacade(){
+    public void testGetFacade() {
         Facade f = Facade.getFacade(false);
         assertNotNull(f);
     }
-    
+
     @Test
-    public void testCreateSelected(){
+    public void testCreateSelected() {
         Selected sel = new Selected("Android", "test", "AKA", 1);
         assertEquals(sel.getTitle(), "Android");
         assertEquals(sel.getDescription(), "test");
@@ -106,30 +137,68 @@ public class FacadeTest {
     }
 
     @Test
-    public void testFirstRoundSelection() {
-        Selected sel = new Selected("Android", "test", "cc", 1);
-        facade.addToFirstRound(gson.toJson(sel));
-        
-        String firstRound = facade.getFirstRound();
+    public void testaddTofirstRoundPriorities() {
+        Selected s1 = new Selected("aa", "ab", "ac", 1);
+        Selected s2 = new Selected("bb", "bb", "bc", 1);
+        Selected s3 = new Selected("cc", "cb", "cc", 2);
+        Selected s4 = new Selected("dd", "db", "dc", 2);
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        arr.add(s4);
+        facade.addTofirstRoundPriorities(gson.toJson(arr));
+        String firstRound = facade.getfirstRoundPriorities();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(firstRound);
         JsonArray jasonArray = element.getAsJsonArray();
-        
-        assertEquals(jasonArray.size(), 1);
-        
+        assertEquals(jasonArray.size(), 4);
     }
-    
-    @Test
-    public void testFirstRoundSelectionj() {
-        Selected sel = new Selected("Android", "test", "cc", 1);
-        facade.addToFirstRound(gson.toJson(sel));
-        
-        String firstRound = facade.getFirstRound();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(firstRound);
-        JsonArray jasonArray = element.getAsJsonArray();
-        
-        assertEquals(jasonArray.size(), 1);
-        
+
+    @Test(expected = NullPointerException.class)
+    public void testaddTofirstRoundPrioritiesIsNull() {
+        facade.addTofirstRoundPriorities(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddTofirstRoundPrioritiesLessThanFour() {
+        Selected s1 = new Selected("aa", "ab", "ac", 1);
+        Selected s2 = new Selected("bb", "bb", "bc", 1);
+        Selected s3 = new Selected("cc", "cb", "cc", 2);
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        facade.addTofirstRoundPriorities(gson.toJson(arr));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddTofirstRoundPrioritiesMoreThanFour() {
+        Selected s1 = new Selected("aa", "ab", "ac", 1);
+        Selected s2 = new Selected("bb", "bb", "bc", 1);
+        Selected s3 = new Selected("cc", "cb", "cc", 2);
+        Selected s4 = new Selected("dd", "db", "dc", 2);
+        Selected s5 = new Selected("ee", "eb", "ec", 23);
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        arr.add(s4);
+        arr.add(s5);
+        facade.addTofirstRoundPriorities(gson.toJson(arr));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddTofirstRoundPrioritiesMoreThanTwoOfFirstIsSelected() {
+        Selected s1 = new Selected("aa", "ab", "ac", 1);
+        Selected s2 = new Selected("bb", "bb", "bc", 1);
+        Selected s3 = new Selected("cc", "cb", "cc", 1);
+        Selected s4 = new Selected("dd", "db", "dc", 2);
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        arr.add(s4);
+        facade.addTofirstRoundPriorities(gson.toJson(arr));
     }
 }

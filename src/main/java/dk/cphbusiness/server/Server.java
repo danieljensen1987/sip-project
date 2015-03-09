@@ -2,7 +2,7 @@ package dk.cphbusiness.server;
 
 import com.sun.net.httpserver.HttpServer;
 import dk.cphbusiness.handlers.FirstRoundHandler;
-import dk.cphbusiness.handlers.SubjectHandler;
+import dk.cphbusiness.handlers.ProposalHandler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -13,8 +13,8 @@ public class Server {
 
     public void run() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(ip, port), 0);
-        server.createContext("/data", new SubjectHandler());
-        server.createContext("/addRoundOne", new FirstRoundHandler());
+        server.createContext("/proposal", new ProposalHandler());
+        server.createContext("/firstRound", new FirstRoundHandler());
 //        server.createContext(filesUri, new HandlerFileServer());
         server.start();
         System.out.println("Server started, listening on port: " + port);

@@ -1,6 +1,9 @@
 package dk.cphbusiness.facade;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
@@ -12,7 +15,7 @@ public class Facade implements IFacade {
     private static Facade facade = new Facade();
     private List<Subject> proposedSubjects = new ArrayList();
     private List<Subject> firstRoundSubjects = new ArrayList();
-    private List<Selected> firstRound = new ArrayList();
+    private List<Selected> firstRoundPriorities = new ArrayList();
     private final Gson gson = new Gson();
 
     public static Facade getFacade(boolean b) {
@@ -26,12 +29,17 @@ public class Facade implements IFacade {
     public void addProposal(String json) throws MinimumCharacterException {
         try {
             Subject subject = gson.fromJson(json, Subject.class);
-            if (subject.getTitle() == null || subject.getTitle().length() < 1) {
-                throw new MinimumCharacterException("Title must be atleast 2 characters long");
-
+            if (subject.getTitle() == null || subject.getTitle().isEmpty()) {
+                throw new MinimumCharacterException("Title must not be empty");
+            }
+            if (subject.getDescription() == null || subject.getDescription().isEmpty()) {
+                throw new MinimumCharacterException("Description must not be empty");
+            }
+            if (subject.getTeacher() == null || subject.getDescription().isEmpty()) {
+                throw new MinimumCharacterException("Teacher must not be empty");
             }
             proposedSubjects.add(subject);
-        } catch(NullPointerException npe){
+        } catch (NullPointerException npe) {
             throw new NullPointerException("SUBJECT IS NULL");
         }
 
@@ -43,11 +51,20 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addSubjectToFirstRound(String json) {
-        try{
+    public void addSubjectToFirstRound(String json) throws MinimumCharacterException {
+        try {
             Subject subject = gson.fromJson(json, Subject.class);
+            if (subject.getTitle() == null || subject.getTitle().isEmpty()) {
+                throw new MinimumCharacterException("Title must not be empty");
+            }
+            if (subject.getDescription() == null || subject.getDescription().isEmpty()) {
+                throw new MinimumCharacterException("Description must not be empty");
+            }
+            if (subject.getTeacher() == null || subject.getDescription().isEmpty()) {
+                throw new MinimumCharacterException("Teacher must not be empty");
+            }
             firstRoundSubjects.add(subject);
-        } catch(NullPointerException npe){
+        } catch (NullPointerException npe) {
             throw new NullPointerException("SUBJECT IS NULL");
         }
     }
@@ -58,14 +75,41 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addToFirstRound(String json) {
-        Selected s = gson.fromJson(json, Selected.class);
-        firstRound.add(s);
+    public void addTofirstRoundPriorities(String json) {
+        try {
+            int first = 0;
+            int second = 0;
+            
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(json);
+            JsonArray jasonArray = element.getAsJsonArray();
+            if(jasonArray.size() != 4){
+                throw new IllegalArgumentException("Only 4 priorities must be selected");
+            }
+            for (int i = 0; i < jasonArray.size(); i++) {
+                Selected s = gson.fromJson(jasonArray.get(i), Selected.class);
+                if(s.getPriority() == 1){
+                    first++;
+                }
+                if(s.getPriority() == 2){
+                    second++;
+                }
+            }
+            if(first != 2 && second != 2){
+                throw new IllegalArgumentException("Only two of first and second priority must be selected");
+            }
+            for (int i = 0; i < jasonArray.size(); i++) {
+                Selected s = gson.fromJson(jasonArray.get(i), Selected.class);
+                firstRoundPriorities.add(s);
+            }
+        } catch (NullPointerException npe) {
+            throw new NullPointerException("SUBJECT IS NULL");
+        }
     }
 
     @Override
-    public String getFirstRound() {
-        return gson.toJson(firstRound);
+    public String getfirstRoundPriorities() {
+        return gson.toJson(firstRoundPriorities);
     }
 
 }

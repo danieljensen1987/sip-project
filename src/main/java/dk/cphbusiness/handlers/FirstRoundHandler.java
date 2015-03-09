@@ -3,6 +3,7 @@ package dk.cphbusiness.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dk.cphbusiness.exceptions.MinimumCharacterException;
 import dk.cphbusiness.facade.Facade;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +31,15 @@ public class FirstRoundHandler implements HttpHandler {
         switch (method) {
             case "GET":
                 try {
-                    response = facade.getFirstRoundSubjects();
+                    String path = he.getRequestURI().getPath();
+                    int lastIndex = path.lastIndexOf("/");
+                    if(lastIndex > 0){
+                        response = facade.getfirstRoundPriorities();
+                    }
+                    else{
+                        response = facade.getFirstRoundSubjects();
+                    }
+                    
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
                     statusCode = 404;
@@ -40,30 +49,25 @@ public class FirstRoundHandler implements HttpHandler {
             case "POST":
                 try 
                 {
+                    String path = he.getRequestURI().getPath();
+                    int lastIndex = path.lastIndexOf("/");
+                    
                     InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
                     BufferedReader br = new BufferedReader(isr);
                     String jsonQuery = br.readLine();
-                    if (jsonQuery.contains("<") || jsonQuery.contains(">"))
-                    {
-                        //Simple anti-Martin check :-)
-                        throw new IllegalArgumentException("Illegal characters in input");
+                    if(lastIndex > 0){
+                        facade.addTofirstRoundPriorities(path);
+                    } else {
+                        facade.addSubjectToFirstRound(jsonQuery);   
                     }
-                    facade.addSubjectToFirstRound(jsonQuery);
-                         
-                } catch(IllegalArgumentException iae) {
+                                          
+                } catch(IllegalArgumentException | MinimumCharacterException iae) {
                     statusCode = 200;
                     response = iae.getMessage();
                 } catch (IOException e) {
                     statusCode = 500;
                     response = "Internal Server Problem";
                 }        
-                break;
-
-            case "PUT":
-                break;
-
-            case "DELETE":
-                break;
         }
 
         he.getResponseHeaders().add("Content-Type", "application/json");
