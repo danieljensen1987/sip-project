@@ -1,6 +1,5 @@
 package dk.cphbusiness.handlers;
 
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
@@ -11,9 +10,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class FirstRoundHandler implements HttpHandler {
+
     private static final boolean dev = false;
     Facade facade;
-    private final Gson gson = new Gson();
 
     public FirstRoundHandler() {
         facade = Facade.getFacade(false);
@@ -32,14 +31,21 @@ public class FirstRoundHandler implements HttpHandler {
             case "GET":
                 try {
                     String path = he.getRequestURI().getPath();
-                    int lastIndex = path.lastIndexOf("/");
-                    if(lastIndex > 0){
-                        response = facade.getfirstRoundPriorities();
+                    String s = path.substring(11);
+                    switch (s) {
+                        case "/proposal":
+                            response = facade.getProposals();
+                            break;
+                        case "/subject":
+                            response = facade.getFirstRoundSubjects();
+                            break;
+                        case "/priority":
+                            response = facade.getfirstRoundPriorities();
+                            break;
+                        default:
+                            response = "URI not found";
+                            break;
                     }
-                    else{
-                        response = facade.getFirstRoundSubjects();
-                    }
-                    
                 } catch (NumberFormatException nfe) {
                     response = "Id is not a number";
                     statusCode = 404;
@@ -47,27 +53,36 @@ public class FirstRoundHandler implements HttpHandler {
                 break;
 
             case "POST":
-                try 
-                {
+                try {
                     String path = he.getRequestURI().getPath();
-                    int lastIndex = path.lastIndexOf("/");
-                    
+                    String s = path.substring(11);
+
                     InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
                     BufferedReader br = new BufferedReader(isr);
                     String jsonQuery = br.readLine();
-                    if(lastIndex > 0){
-                        facade.addTofirstRoundPriorities(path);
-                    } else {
-                        facade.addSubjectToFirstRound(jsonQuery);   
+                    
+                    switch (s) {
+                        case "/proposal":
+                            facade.addProposal(jsonQuery);
+                            break;
+                        case "/subject":
+                            facade.addSubjectToFirstRound(jsonQuery);
+                            break;
+                        case "/priority":
+                            facade.addTofirstRoundPriorities(jsonQuery);
+                            break;
+                        default:
+                            response = "URI not found";
+                            break;
                     }
-                                          
-                } catch(IllegalArgumentException | MinimumCharacterException iae) {
+
+                } catch (IllegalArgumentException | MinimumCharacterException iae) {
                     statusCode = 200;
                     response = iae.getMessage();
                 } catch (IOException e) {
                     statusCode = 500;
                     response = "Internal Server Problem";
-                }        
+                }
         }
 
         he.getResponseHeaders().add("Content-Type", "application/json");

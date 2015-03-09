@@ -2,7 +2,6 @@ package dk.cphbusiness.server;
 
 import com.sun.net.httpserver.HttpServer;
 import dk.cphbusiness.handlers.FirstRoundHandler;
-import dk.cphbusiness.handlers.ProposalHandler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -10,14 +9,18 @@ public class Server {
 
     static int port = 8080;
     static String ip = "localhost";
+    static HttpServer server;
 
     public void run() throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(ip, port), 0);
-        server.createContext("/proposal", new ProposalHandler());
+        Server.server = HttpServer.create(new InetSocketAddress(ip, port), 0);
         server.createContext("/firstRound", new FirstRoundHandler());
-//        server.createContext(filesUri, new HandlerFileServer());
         server.start();
         System.out.println("Server started, listening on port: " + port);
+    }
+    
+    public static void stop(){
+        server.stop(1);
+        System.out.println("Server stopped");
     }
 
     public static void main(String[] args) throws IOException {
