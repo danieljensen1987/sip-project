@@ -9,5 +9,5 @@ public interface IFacade {
     public void addSubjectToFirstRound(String json) throws MinimumCharacterException;
     public String getFirstRoundSubjects();
     public void addTofirstRoundPriorities(String json);
-    public String getfirstRoundPriorities();
+    public String getFirstRoundPriorities();
 }

@@ -40,7 +40,7 @@ public class FirstRoundHandler implements HttpHandler {
                             response = facade.getFirstRoundSubjects();
                             break;
                         case "/priority":
-                            response = facade.getfirstRoundPriorities();
+                            response = facade.getFirstRoundPriorities();
                             break;
                         default:
                             response = "URI not found";

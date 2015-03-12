@@ -108,7 +108,7 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public String getfirstRoundPriorities() {
+    public String getFirstRoundPriorities() {
         return gson.toJson(firstRoundPriorities);
     }
 

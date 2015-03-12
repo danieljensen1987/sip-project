@@ -148,7 +148,7 @@ public class FacadeTest {
         arr.add(s3);
         arr.add(s4);
         facade.addTofirstRoundPriorities(gson.toJson(arr));
-        String firstRound = facade.getfirstRoundPriorities();
+        String firstRound = facade.getFirstRoundPriorities();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(firstRound);
         JsonArray jasonArray = element.getAsJsonArray();
