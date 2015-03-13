@@ -6,8 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Subject;
-import dk.cphbusiness.entities.Teacher;
-import dk.cphbusiness.entities.Student;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -29,20 +27,6 @@ public class FacadeTest {
         facade.addSubjectToFirstRound(gson.toJson(new Subject("C#", "make more apps", "TOR")));
         facade.addSubjectToFirstRound(gson.toJson(new Subject("Arduino", "what", "TOG")));
         facade.addSubjectToFirstRound(gson.toJson(new Subject("HASKELL", "be brainy", "Tysker")));
-    }
-
-    @Test
-    public void testCreateStudent() {
-        Student s = new Student("aa");
-        assertNotNull(s);
-        assertEquals(s.getStudentID(), "aa");
-    }
-
-    @Test
-    public void testCreateTeacher() {
-        Teacher t = new Teacher("AKA");
-        assertNotNull(t);
-        assertEquals(t.getTeacherID(), "AKA");
     }
 
     @Test
@@ -129,20 +113,20 @@ public class FacadeTest {
 
     @Test
     public void testCreateSelected() {
-        Selected sel = new Selected("Android", "test", "AKA", 1);
+        Selected sel = new Selected("Android", "test", "AKA", 1, "aa");
         assertEquals(sel.getTitle(), "Android");
         assertEquals(sel.getDescription(), "test");
         assertEquals(sel.getTeacher(), "AKA");
         assertEquals(sel.getPriority(), 1);
+        assertEquals(sel.getStudentId(), "aa");
     }
 
     @Test
     public void testaddTofirstRoundPriorities() {
-        Selected s1 = new Selected("aa", "ab", "ac", 1);
-        System.out.println(s1.toString());
-        Selected s2 = new Selected("bb", "bb", "bc", 1);
-        Selected s3 = new Selected("cc", "cb", "cc", 2);
-        Selected s4 = new Selected("dd", "db", "dc", 2);
+        Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
+        Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
+        Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
+        Selected s4 = new Selected("dd", "db", "dc", 2, "aa");
         ArrayList<Selected> arr = new ArrayList();
         arr.add(s1);
         arr.add(s2);
@@ -163,9 +147,9 @@ public class FacadeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testaddTofirstRoundPrioritiesLessThanFour() {
-        Selected s1 = new Selected("aa", "ab", "ac", 1);
-        Selected s2 = new Selected("bb", "bb", "bc", 1);
-        Selected s3 = new Selected("cc", "cb", "cc", 2);
+        Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
+        Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
+        Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
         ArrayList<Selected> arr = new ArrayList();
         arr.add(s1);
         arr.add(s2);
@@ -175,11 +159,11 @@ public class FacadeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testaddTofirstRoundPrioritiesMoreThanFour() {
-        Selected s1 = new Selected("aa", "ab", "ac", 1);
-        Selected s2 = new Selected("bb", "bb", "bc", 1);
-        Selected s3 = new Selected("cc", "cb", "cc", 2);
-        Selected s4 = new Selected("dd", "db", "dc", 2);
-        Selected s5 = new Selected("ee", "eb", "ec", 23);
+        Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
+        Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
+        Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
+        Selected s4 = new Selected("dd", "db", "dc", 2, "aa");
+        Selected s5 = new Selected("ee", "eb", "ec", 23, "aa");
         ArrayList<Selected> arr = new ArrayList();
         arr.add(s1);
         arr.add(s2);
@@ -191,10 +175,10 @@ public class FacadeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testaddTofirstRoundPrioritiesMoreThanTwoOfFirstIsSelected() {
-        Selected s1 = new Selected("aa", "ab", "ac", 1);
-        Selected s2 = new Selected("bb", "bb", "bc", 1);
-        Selected s3 = new Selected("cc", "cb", "cc", 1);
-        Selected s4 = new Selected("dd", "db", "dc", 2);
+        Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
+        Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
+        Selected s3 = new Selected("cc", "cb", "cc", 1, "aa");
+        Selected s4 = new Selected("dd", "db", "dc", 2, "aa");
         ArrayList<Selected> arr = new ArrayList();
         arr.add(s1);
         arr.add(s2);
