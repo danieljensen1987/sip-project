@@ -75,7 +75,7 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addTofirstRoundPriorities(String json) {
+    public void addToFirstRoundPriorities(String json) {
         try {
             int first = 0;
             int second = 0;

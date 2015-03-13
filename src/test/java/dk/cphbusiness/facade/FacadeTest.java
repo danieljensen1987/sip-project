@@ -139,6 +139,7 @@ public class FacadeTest {
     @Test
     public void testaddTofirstRoundPriorities() {
         Selected s1 = new Selected("aa", "ab", "ac", 1);
+        System.out.println(s1.toString());
         Selected s2 = new Selected("bb", "bb", "bc", 1);
         Selected s3 = new Selected("cc", "cb", "cc", 2);
         Selected s4 = new Selected("dd", "db", "dc", 2);
@@ -147,7 +148,7 @@ public class FacadeTest {
         arr.add(s2);
         arr.add(s3);
         arr.add(s4);
-        facade.addTofirstRoundPriorities(gson.toJson(arr));
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
         String firstRound = facade.getFirstRoundPriorities();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(firstRound);
@@ -157,7 +158,7 @@ public class FacadeTest {
 
     @Test(expected = NullPointerException.class)
     public void testaddTofirstRoundPrioritiesIsNull() {
-        facade.addTofirstRoundPriorities(null);
+        facade.addToFirstRoundPriorities(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -169,7 +170,7 @@ public class FacadeTest {
         arr.add(s1);
         arr.add(s2);
         arr.add(s3);
-        facade.addTofirstRoundPriorities(gson.toJson(arr));
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -185,7 +186,7 @@ public class FacadeTest {
         arr.add(s3);
         arr.add(s4);
         arr.add(s5);
-        facade.addTofirstRoundPriorities(gson.toJson(arr));
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -199,6 +200,6 @@ public class FacadeTest {
         arr.add(s2);
         arr.add(s3);
         arr.add(s4);
-        facade.addTofirstRoundPriorities(gson.toJson(arr));
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
     }
 }

@@ -8,6 +8,6 @@ public interface IFacade {
     public String getProposals();
     public void addSubjectToFirstRound(String json) throws MinimumCharacterException;
     public String getFirstRoundSubjects();
-    public void addTofirstRoundPriorities(String json);
+    public void addToFirstRoundPriorities(String json);
     public String getFirstRoundPriorities();
 }

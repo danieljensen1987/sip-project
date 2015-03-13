@@ -69,7 +69,7 @@ public class FirstRoundHandler implements HttpHandler {
                             facade.addSubjectToFirstRound(jsonQuery);
                             break;
                         case "/priority":
-                            facade.addTofirstRoundPriorities(jsonQuery);
+                            facade.addToFirstRoundPriorities(jsonQuery);
                             break;
                         default:
                             response = "URI not found";
