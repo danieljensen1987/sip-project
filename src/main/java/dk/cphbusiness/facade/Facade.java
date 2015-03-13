@@ -112,4 +112,40 @@ public class Facade implements IFacade {
         return gson.toJson(firstRoundPriorities);
     }
 
+    @Override
+    public int calculatePoint(String poolA, String poolB, String studentID) {
+        
+        int point = 0;
+        
+        for (Selected selected : firstRoundPriorities) {
+            if (selected.getStudentId().equals("aa")) {
+                if (poolA.equals(selected.getTitle())) {
+                    switch (selected.getPriority()) {
+                        case 1:
+                            point += 10;
+                            break;
+                        case 2:
+                            point += 7;
+                            break;
+                        default:
+                            point +=4;
+                    }
+                }
+                if (poolB.equals(selected.getTitle())) {
+                    switch (selected.getPriority()) {
+                        case 1:
+                            point += 10;
+                            break;
+                        case 2:
+                            point += 7;
+                            break;
+                        default:
+                            point +=4;
+                    }
+                }
+            }
+        }   
+        return point;
+    }
+
 }

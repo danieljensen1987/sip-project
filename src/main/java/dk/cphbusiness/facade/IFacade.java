@@ -10,4 +10,5 @@ public interface IFacade {
     public String getFirstRoundSubjects();
     public void addToFirstRoundPriorities(String json);
     public String getFirstRoundPriorities();
+    public int calculatePoint(String poola, String poolb, String studentID);
 }

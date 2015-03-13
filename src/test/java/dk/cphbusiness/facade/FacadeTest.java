@@ -186,4 +186,22 @@ public class FacadeTest {
         arr.add(s4);
         facade.addToFirstRoundPriorities(gson.toJson(arr));
     }
+    
+    @Test
+    public void test(){
+        Selected s1 = new Selected("C#", "ab", "ac", 1, "aa");
+        Selected s2 = new Selected("Prolog", "bb", "bc", 1, "aa");
+        Selected s3 = new Selected("Android", "cb", "cc", 2, "aa");
+        Selected s4 = new Selected("Haskell", "db", "dc", 2, "aa");
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        arr.add(s4);
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
+        
+        int i = facade.calculatePoint("C#", "Android", "aa");
+        
+        assertEquals(i, 17);       
+    }  
 }
