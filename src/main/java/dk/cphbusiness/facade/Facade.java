@@ -118,7 +118,7 @@ public class Facade implements IFacade {
         int point = 0;
         
         for (Selected selected : firstRoundPriorities) {
-            if (selected.getStudentId().equals("aa")) {
+            if (selected.getStudentId().equals(studentID)) {
                 if (poolA.equals(selected.getTitle())) {
                     switch (selected.getPriority()) {
                         case 1:
