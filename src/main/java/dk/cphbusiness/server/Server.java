@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 
 public class Server {
 
-    static int port = 8080;
+    static int port = 9292;
     static String ip = "localhost";
     static HttpServer server;
 
