@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import dk.cphbusiness.entities.Pool;
 import dk.cphbusiness.entities.Selected;
+import dk.cphbusiness.entities.StudentHappiness;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Facade implements IFacade {
@@ -164,6 +167,23 @@ public class Facade implements IFacade {
             }
         }
         return pointA + pointB;
+    }
+
+    @Override
+    public String getCalculatedPoints(String json) {
+        HashMap<String, Integer> happinessList = new HashMap();
+        ArrayList<StudentHappiness> sh = new ArrayList();
+        
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+
+        for (int i = 0; i < jasonArray.size(); i++) {
+            Pool p = gson.fromJson(jasonArray.get(i), Pool.class);
+            sh.add(new StudentHappiness(p.getStudentID(), calculatePoint(p.getPoolA(), p.getPoolB(), p.getStudentID())));
+        }
+        
+        return gson.toJson(sh);
     }
 
 }

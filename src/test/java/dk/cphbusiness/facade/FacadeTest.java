@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import dk.cphbusiness.entities.Pool;
 import dk.cphbusiness.entities.Selected;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
@@ -211,4 +212,38 @@ public class FacadeTest {
         
         assertEquals(i, 14); 
     }  
+    
+    @Test
+    public void testGetCalculatePoints(){
+        Selected s1 = new Selected("C#", "ab", "ac", 1, "Bjarke Carlsen");
+        Selected s2 = new Selected("SW Design", "bb", "bc", 1, "Bjarke Carlsen");
+        Selected s3 = new Selected("Android", "cb", "cc", 2, "Bjarke Carlsen");
+        Selected s4 = new Selected("Python", "db", "dc", 2, "Bjarke Carlsen");
+        ArrayList<Selected> arr = new ArrayList();
+        arr.add(s1);
+        arr.add(s2);
+        arr.add(s3);
+        arr.add(s4);
+        facade.addToFirstRoundPriorities(gson.toJson(arr));
+        ArrayList<String> poolA = new ArrayList();
+        ArrayList<String> poolB = new ArrayList();
+        
+        poolA.add("C#");
+        poolA.add("Database");
+        poolB.add("Test");
+        poolB.add("");
+        
+        Pool p = new Pool(poolA, poolB, "Bjarke Carlsen");
+        Pool p1 = new Pool(poolA, poolB, "Jensen Jens");
+        
+        ArrayList<Pool> arrayToSend = new ArrayList();
+        arrayToSend.add(p);
+        arrayToSend.add(p1);
+        
+        String jsonToSend = gson.toJson(arrayToSend);
+        
+        assertEquals(facade.getCalculatedPoints(jsonToSend).length(), 89);
+        assertEquals(facade.getCalculatedPoints(jsonToSend), 
+                "[{\"studentID\":\"Bjarke Carlsen\",\"happiness\":14},{\"studentID\":\"Jensen Jens\",\"happiness\":0}]");
+    }
 }
