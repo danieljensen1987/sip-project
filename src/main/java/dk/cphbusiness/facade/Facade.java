@@ -79,23 +79,23 @@ public class Facade implements IFacade {
         try {
             int first = 0;
             int second = 0;
-            
+
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(json);
             JsonArray jasonArray = element.getAsJsonArray();
-            if(jasonArray.size() != 4){
+            if (jasonArray.size() != 4) {
                 throw new IllegalArgumentException("Only 4 priorities must be selected");
             }
             for (int i = 0; i < jasonArray.size(); i++) {
                 Selected s = gson.fromJson(jasonArray.get(i), Selected.class);
-                if(s.getPriority() == 1){
+                if (s.getPriority() == 1) {
                     first++;
                 }
-                if(s.getPriority() == 2){
+                if (s.getPriority() == 2) {
                     second++;
                 }
             }
-            if(first != 2 && second != 2){
+            if (first != 2 && second != 2) {
                 throw new IllegalArgumentException("Only two of first and second priority must be selected");
             }
             for (int i = 0; i < jasonArray.size(); i++) {
@@ -113,39 +113,57 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public int calculatePoint(String poolA, String poolB, String studentID) {
-        
-        int point = 0;
-        
+    public int calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID) {
+        int pointA = 0;
+        int pointB = 0;
+
         for (Selected selected : firstRoundPriorities) {
             if (selected.getStudentId().equals(studentID)) {
-                if (poolA.equals(selected.getTitle())) {
-                    switch (selected.getPriority()) {
-                        case 1:
-                            point += 10;
-                            break;
-                        case 2:
-                            point += 7;
-                            break;
-                        default:
-                            point +=4;
+                for (String a : poolA) {
+                    if (a.equals(selected.getTitle())) {
+                        switch (selected.getPriority()) {
+                            case 1:
+                                if (10 > pointA) {
+                                    pointA = 10;
+                                }
+                                break;
+                            case 2:
+                                if (7 > pointA) {
+                                    pointA = 7;
+                                }
+                                break;
+                        }
+                    } else {
+                        if(4 > pointA){
+                            pointA = 4;
+                        }
+                        
                     }
                 }
-                if (poolB.equals(selected.getTitle())) {
-                    switch (selected.getPriority()) {
-                        case 1:
-                            point += 10;
-                            break;
-                        case 2:
-                            point += 7;
-                            break;
-                        default:
-                            point +=4;
+                for (String b : poolB) {
+                    if (b.equals(selected.getTitle())) {
+                        switch (selected.getPriority()) {
+                            case 1:
+                                if (10 > pointB) {
+                                    pointB = 10;
+                                }
+                                break;
+                            case 2:
+                                if (7 > pointB) {
+                                    pointB = 7;
+                                }
+                                break;
+                        }
+                    } else {
+                        if(4 > pointB){
+                            pointB = 4;
+                        }
                     }
                 }
+
             }
-        }   
-        return point;
+        }
+        return pointA + pointB;
     }
 
 }

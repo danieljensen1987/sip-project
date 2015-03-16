@@ -38,6 +38,22 @@ public class FacadeTest {
     }
 
     @Test
+    public void testCreateSelected() {
+        Selected sel = new Selected("Android", "test", "AKA", 1, "aa");
+        assertEquals(sel.getTitle(), "Android");
+        assertEquals(sel.getDescription(), "test");
+        assertEquals(sel.getTeacher(), "AKA");
+        assertEquals(sel.getPriority(), 1);
+        assertEquals(sel.getStudentId(), "aa");
+    }
+    
+    @Test
+    public void testGetFacade() {
+        Facade f = Facade.getFacade(false);
+        assertNotNull(f);
+    }
+
+    @Test
     public void testAddProposal() throws MinimumCharacterException {
         Subject s = new Subject("Android", "1", "aa");
         facade.addProposal(gson.toJson(s));
@@ -106,23 +122,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void testGetFacade() {
-        Facade f = Facade.getFacade(false);
-        assertNotNull(f);
-    }
-
-    @Test
-    public void testCreateSelected() {
-        Selected sel = new Selected("Android", "test", "AKA", 1, "aa");
-        assertEquals(sel.getTitle(), "Android");
-        assertEquals(sel.getDescription(), "test");
-        assertEquals(sel.getTeacher(), "AKA");
-        assertEquals(sel.getPriority(), 1);
-        assertEquals(sel.getStudentId(), "aa");
-    }
-
-    @Test
-    public void testaddTofirstRoundPriorities() {
+    public void testAddTofirstRoundPriorities() {
         Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
         Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
         Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
@@ -141,12 +141,12 @@ public class FacadeTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testaddTofirstRoundPrioritiesIsNull() {
+    public void testAddTofirstRoundPrioritiesIsNull() {
         facade.addToFirstRoundPriorities(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testaddTofirstRoundPrioritiesLessThanFour() {
+    public void testAddTofirstRoundPrioritiesLessThanFour() {
         Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
         Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
         Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
@@ -158,7 +158,7 @@ public class FacadeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testaddTofirstRoundPrioritiesMoreThanFour() {
+    public void testAddTofirstRoundPrioritiesMoreThanFour() {
         Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
         Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
         Selected s3 = new Selected("cc", "cb", "cc", 2, "aa");
@@ -174,7 +174,7 @@ public class FacadeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testaddTofirstRoundPrioritiesMoreThanTwoOfFirstIsSelected() {
+    public void testAddTofirstRoundPrioritiesMoreThanTwoOfFirstIsSelected() {
         Selected s1 = new Selected("aa", "ab", "ac", 1, "aa");
         Selected s2 = new Selected("bb", "bb", "bc", 1, "aa");
         Selected s3 = new Selected("cc", "cb", "cc", 1, "aa");
@@ -188,20 +188,27 @@ public class FacadeTest {
     }
     
     @Test
-    public void test(){
-        Selected s1 = new Selected("C#", "ab", "ac", 1, "aa");
-        Selected s2 = new Selected("Prolog", "bb", "bc", 1, "aa");
-        Selected s3 = new Selected("Android", "cb", "cc", 2, "aa");
-        Selected s4 = new Selected("Haskell", "db", "dc", 2, "aa");
+    public void testCalculatePoints(){
+        Selected s1 = new Selected("C#", "ab", "ac", 1, "Bjarke Carlsen");
+        Selected s2 = new Selected("SW Design", "bb", "bc", 1, "Bjarke Carlsen");
+        Selected s3 = new Selected("Android", "cb", "cc", 2, "Bjarke Carlsen");
+        Selected s4 = new Selected("Python", "db", "dc", 2, "Bjarke Carlsen");
         ArrayList<Selected> arr = new ArrayList();
         arr.add(s1);
         arr.add(s2);
         arr.add(s3);
         arr.add(s4);
         facade.addToFirstRoundPriorities(gson.toJson(arr));
+        ArrayList<String> poolA = new ArrayList();
+        ArrayList<String> poolB = new ArrayList();
         
-        int i = facade.calculatePoint("C#", "Android", "aa");
+        poolA.add("C#");
+        poolA.add("Database");
+        poolB.add("Test");
+        poolB.add("");
         
-        assertEquals(i, 17);       
+        int i = facade.calculatePoint(poolA, poolB, "Bjarke Carlsen");
+        
+        assertEquals(i, 14); 
     }  
 }

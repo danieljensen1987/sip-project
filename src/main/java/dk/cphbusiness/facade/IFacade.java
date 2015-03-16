@@ -1,6 +1,7 @@
 package dk.cphbusiness.facade;
 
 import dk.cphbusiness.exceptions.MinimumCharacterException;
+import java.util.ArrayList;
 
 
 public interface IFacade {
@@ -10,5 +11,5 @@ public interface IFacade {
     public String getFirstRoundSubjects();
     public void addToFirstRoundPriorities(String json);
     public String getFirstRoundPriorities();
-    public int calculatePoint(String poola, String poolb, String studentID);
+    public int calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID);
 }
