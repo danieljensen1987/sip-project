@@ -20,14 +20,7 @@ public class FacadeTest {
 
     @Before
     public void setUp() throws MinimumCharacterException {
-        facade.addProposal(gson.toJson(new Subject("Android", "make good apps", "PELO")));
-        facade.addProposal(gson.toJson(new Subject("C#", "make more apps", "TOR")));
-        facade.addProposal(gson.toJson(new Subject("Arduino", "what", "TOG")));
-        facade.addProposal(gson.toJson(new Subject("HASKELL", "be brainy", "Tysker")));
-        facade.addSubjectToFirstRound(gson.toJson(new Subject("Android", "make good apps", "PELO")));
-        facade.addSubjectToFirstRound(gson.toJson(new Subject("C#", "make more apps", "TOR")));
-        facade.addSubjectToFirstRound(gson.toJson(new Subject("Arduino", "what", "TOG")));
-        facade.addSubjectToFirstRound(gson.toJson(new Subject("HASKELL", "be brainy", "Tysker")));
+        facade.createTestData();
     }
 
     @Test
@@ -57,12 +50,7 @@ public class FacadeTest {
     @Test
     public void testAddProposal() throws MinimumCharacterException {
         Subject s = new Subject("Android", "1", "aa");
-        facade.addProposal(gson.toJson(s));
-        String json = facade.getProposals();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        JsonArray jasonArray = element.getAsJsonArray();
-        assertEquals(jasonArray.size(), 5);
+        assertTrue(facade.addProposal(gson.toJson(s)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -87,16 +75,20 @@ public class FacadeTest {
         Subject s = new Subject("c#", "bb", null);
         facade.addProposal(gson.toJson(s));
     }
+    
+    @Test
+    public void testGetProposals(){
+        String json = facade.getProposals();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        assertEquals(jasonArray.size(), 8);
+    }
 
     @Test
     public void testAddSubjectToFirstRound() throws MinimumCharacterException {
         Subject s = new Subject("test", "test", "bb");
-        facade.addSubjectToFirstRound(gson.toJson(s));
-        String json = facade.getFirstRoundSubjects();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        JsonArray jasonArray = element.getAsJsonArray();
-        assertEquals(jasonArray.size(), 5);
+        assertTrue(facade.addSubjectToFirstRound(gson.toJson(s)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -121,6 +113,15 @@ public class FacadeTest {
         Subject s = new Subject("c#", "bb", null);
         facade.addSubjectToFirstRound(gson.toJson(s));
     }
+    
+    @Test
+    public void testGetFirstRoundSubjects(){
+        String json = facade.getFirstRoundSubjects();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        assertEquals(jasonArray.size(), 8);
+    }
 
     @Test
     public void testAddTofirstRoundPriorities() {
@@ -133,12 +134,7 @@ public class FacadeTest {
         arr.add(s2);
         arr.add(s3);
         arr.add(s4);
-        facade.addToFirstRoundPriorities(gson.toJson(arr));
-        String firstRound = facade.getFirstRoundPriorities();
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(firstRound);
-        JsonArray jasonArray = element.getAsJsonArray();
-        assertEquals(jasonArray.size(), 4);
+        assertTrue(facade.addToFirstRoundPriorities(gson.toJson(arr)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -189,61 +185,51 @@ public class FacadeTest {
     }
     
     @Test
+    public void getFirstRoundPriorities(){
+        String json = facade.getFirstRoundPriorities();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        assertEquals(jasonArray.size(), 16);
+    }
+    
+    @Test
     public void testCalculatePoints(){
-        Selected s1 = new Selected("C#", "ab", "ac", 1, "Bjarke Carlsen");
-        Selected s2 = new Selected("SW Design", "bb", "bc", 1, "Bjarke Carlsen");
-        Selected s3 = new Selected("Android", "cb", "cc", 2, "Bjarke Carlsen");
-        Selected s4 = new Selected("Python", "db", "dc", 2, "Bjarke Carlsen");
-        ArrayList<Selected> arr = new ArrayList();
-        arr.add(s1);
-        arr.add(s2);
-        arr.add(s3);
-        arr.add(s4);
-        facade.addToFirstRoundPriorities(gson.toJson(arr));
         ArrayList<String> poolA = new ArrayList();
         ArrayList<String> poolB = new ArrayList();
-        
-        poolA.add("C#");
-        poolA.add("Database");
-        poolB.add("Test");
+        poolA.add("Arduino");
+        poolA.add("");
+        poolB.add("SW Design");
         poolB.add("");
-        
-        int i = facade.calculatePoint(poolA, poolB, "Bjarke Carlsen");
-        
-        assertEquals(i, 14); 
+        int points1 = facade.calculatePoint(poolA, poolB, "Bjarke Carlsen");
+        int points2 = facade.calculatePoint(poolA, poolB, "Martin Olgenkjær");
+        int points3 = facade.calculatePoint(poolA, poolB, "Henrik Stavnem");
+        int points4 = facade.calculatePoint(poolA, poolB, "Nicklas Thomsen");
+        assertEquals(13, points1); 
+        assertEquals(20, points2); 
+        assertEquals(6, points3); 
+        assertEquals(17, points4); 
     }  
     
     @Test
-    public void testGetCalculatePoints(){
-        Selected s1 = new Selected("C#", "ab", "ac", 1, "Bjarke Carlsen");
-        Selected s2 = new Selected("SW Design", "bb", "bc", 1, "Bjarke Carlsen");
-        Selected s3 = new Selected("Android", "cb", "cc", 2, "Bjarke Carlsen");
-        Selected s4 = new Selected("Python", "db", "dc", 2, "Bjarke Carlsen");
-        ArrayList<Selected> arr = new ArrayList();
-        arr.add(s1);
-        arr.add(s2);
-        arr.add(s3);
-        arr.add(s4);
-        facade.addToFirstRoundPriorities(gson.toJson(arr));
+    public void testGetStudentsHappiness(){
         ArrayList<String> poolA = new ArrayList();
         ArrayList<String> poolB = new ArrayList();
-        
-        poolA.add("C#");
-        poolA.add("Database");
-        poolB.add("Test");
+        ArrayList<String> students = new ArrayList();
+        poolA.add("Arduino");
+        poolA.add("");
+        poolB.add("SW Design");
         poolB.add("");
-        
-        Pool p = new Pool(poolA, poolB, "Bjarke Carlsen");
-        Pool p1 = new Pool(poolA, poolB, "Jensen Jens");
-        
-        ArrayList<Pool> arrayToSend = new ArrayList();
-        arrayToSend.add(p);
-        arrayToSend.add(p1);
-        
-        String jsonToSend = gson.toJson(arrayToSend);
-        
-        assertEquals(facade.getCalculatedPoints(jsonToSend).length(), 89);
-        assertEquals(facade.getCalculatedPoints(jsonToSend), 
-                "[{\"studentID\":\"Bjarke Carlsen\",\"happiness\":14},{\"studentID\":\"Jensen Jens\",\"happiness\":0}]");
+        students.add("Bjarke Carlsen");
+        students.add("Martin Olgenkjær");
+        students.add("Henrik Stavnem");
+        students.add("Nicklas Thomsen");
+        Pool p = new Pool(poolA, poolB, students);
+        String json = facade.getStudentsHappiness(gson.toJson(p));
+//        System.out.println(json);
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        JsonArray jasonArray = element.getAsJsonArray();
+        assertEquals(4, jasonArray.size());
     }
 }

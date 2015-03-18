@@ -10,12 +10,12 @@ import dk.cphbusiness.entities.StudentHappiness;
 import dk.cphbusiness.entities.Subject;
 import dk.cphbusiness.exceptions.MinimumCharacterException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Facade implements IFacade {
 
     private static Facade facade = new Facade();
+    private List<String> students = new ArrayList();
     private List<Subject> proposedSubjects = new ArrayList();
     private List<Subject> firstRoundSubjects = new ArrayList();
     private List<Selected> firstRoundPriorities = new ArrayList();
@@ -28,8 +28,49 @@ public class Facade implements IFacade {
         return facade;
     }
 
+    public void createTestData() throws MinimumCharacterException {
+        proposedSubjects.add(new Subject("Android", "make good apps", "PELO"));
+        proposedSubjects.add(new Subject("C#", "make more apps", "TOR"));
+        proposedSubjects.add(new Subject("Arduino", "what", "TOG"));
+        proposedSubjects.add(new Subject("Test", "be brainy", "LAM"));
+        proposedSubjects.add(new Subject("Databases", "test", "LAM"));
+        proposedSubjects.add(new Subject("Prolog", "test", "AKA"));
+        proposedSubjects.add(new Subject("SW Design", "test", "AKA"));
+        proposedSubjects.add(new Subject("Games", "test", "CHU"));
+
+        for (Subject subject : proposedSubjects) {
+            firstRoundSubjects.add(subject);
+        }
+
+        students.add("Bjarke Carlsen");
+        students.add("Martin Olgenkjær");
+        students.add("Henrik Stavnem");
+        students.add("Nicklas Thomsen");
+
+        firstRoundPriorities.add(new Selected("C#", "test", "TOR", 1, students.get(0)));
+        firstRoundPriorities.add(new Selected("SW Design", "test", "TOR", 1, students.get(0)));
+        firstRoundPriorities.add(new Selected("Android", "test", "TOR", 2, students.get(0)));
+        firstRoundPriorities.add(new Selected("Python", "test", "TOR", 2, students.get(0)));
+
+        firstRoundPriorities.add(new Selected("Arduino", "test", "TOR", 1, students.get(1)));
+        firstRoundPriorities.add(new Selected("SW Design", "test", "TOR", 1, students.get(1)));
+        firstRoundPriorities.add(new Selected("Databases", "test", "TOR", 2, students.get(1)));
+        firstRoundPriorities.add(new Selected("Test", "test", "TOR", 2, students.get(1)));
+
+        firstRoundPriorities.add(new Selected("Android", "test", "TOR", 1, students.get(2)));
+        firstRoundPriorities.add(new Selected("Games", "test", "TOR", 1, students.get(2)));
+        firstRoundPriorities.add(new Selected("C#", "test", "TOR", 2, students.get(2)));
+        firstRoundPriorities.add(new Selected("Databases", "test", "TOR", 2, students.get(2)));
+
+        firstRoundPriorities.add(new Selected("Python", "test", "TOR", 1, students.get(3)));
+        firstRoundPriorities.add(new Selected("Arduino", "test", "TOR", 1, students.get(3)));
+        firstRoundPriorities.add(new Selected("SW Design", "test", "TOR", 2, students.get(3)));
+        firstRoundPriorities.add(new Selected("Test", "test", "TOR", 2, students.get(3)));
+    }
+
     @Override
-    public void addProposal(String json) throws MinimumCharacterException {
+    public boolean addProposal(String json) throws MinimumCharacterException {
+        boolean status = false;
         try {
             Subject subject = gson.fromJson(json, Subject.class);
             if (subject.getTitle() == null || subject.getTitle().isEmpty()) {
@@ -42,9 +83,11 @@ public class Facade implements IFacade {
                 throw new MinimumCharacterException("Teacher must not be empty");
             }
             proposedSubjects.add(subject);
+            status = true;
         } catch (NullPointerException npe) {
             throw new NullPointerException("SUBJECT IS NULL");
         }
+        return status;
 
     }
 
@@ -54,7 +97,8 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addSubjectToFirstRound(String json) throws MinimumCharacterException {
+    public boolean addSubjectToFirstRound(String json) throws MinimumCharacterException {
+        boolean status = false;
         try {
             Subject subject = gson.fromJson(json, Subject.class);
             if (subject.getTitle() == null || subject.getTitle().isEmpty()) {
@@ -67,9 +111,11 @@ public class Facade implements IFacade {
                 throw new MinimumCharacterException("Teacher must not be empty");
             }
             firstRoundSubjects.add(subject);
+            status = true;
         } catch (NullPointerException npe) {
             throw new NullPointerException("SUBJECT IS NULL");
         }
+        return status;
     }
 
     @Override
@@ -78,7 +124,8 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public void addToFirstRoundPriorities(String json) {
+    public boolean addToFirstRoundPriorities(String json) {
+        boolean status = false;
         try {
             int first = 0;
             int second = 0;
@@ -105,9 +152,11 @@ public class Facade implements IFacade {
                 Selected s = gson.fromJson(jasonArray.get(i), Selected.class);
                 firstRoundPriorities.add(s);
             }
+            status = true;
         } catch (NullPointerException npe) {
             throw new NullPointerException("SUBJECT IS NULL");
         }
+        return status;
     }
 
     @Override
@@ -137,10 +186,10 @@ public class Facade implements IFacade {
                                 break;
                         }
                     } else {
-                        if(4 > pointA){
-                            pointA = 4;
+                        if (3 > pointA) {
+                            pointA = 3;
                         }
-                        
+
                     }
                 }
                 for (String b : poolB) {
@@ -158,8 +207,8 @@ public class Facade implements IFacade {
                                 break;
                         }
                     } else {
-                        if(4 > pointB){
-                            pointB = 4;
+                        if (3 > pointB) {
+                            pointB = 3;
                         }
                     }
                 }
@@ -170,20 +219,17 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public String getCalculatedPoints(String json) {
-        HashMap<String, Integer> happinessList = new HashMap();
-        ArrayList<StudentHappiness> sh = new ArrayList();
-        
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        JsonArray jasonArray = element.getAsJsonArray();
-
-        for (int i = 0; i < jasonArray.size(); i++) {
-            Pool p = gson.fromJson(jasonArray.get(i), Pool.class);
-            sh.add(new StudentHappiness(p.getStudentID(), calculatePoint(p.getPoolA(), p.getPoolB(), p.getStudentID())));
+    public String getStudentsHappiness(String json) {
+        ArrayList<StudentHappiness> happinessList = new ArrayList();
+        Pool p = gson.fromJson(json, Pool.class);
+        ArrayList<String> poolA = p.getPoolA();
+        ArrayList<String> poolB = p.getPoolB();
+        for (String student : p.getStudents()) {
+            int points = calculatePoint(poolA, poolB, student);
+            happinessList.add(new StudentHappiness(student, points));
         }
-        
-        return gson.toJson(sh);
+
+        return gson.toJson(happinessList);
     }
 
 }

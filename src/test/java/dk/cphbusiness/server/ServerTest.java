@@ -1,5 +1,6 @@
 package dk.cphbusiness.server;
 
+import dk.cphbusiness.exceptions.MinimumCharacterException;
 import java.io.IOException;
 import java.util.Arrays;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,7 +13,7 @@ public class ServerTest {
 //    Server server;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, MinimumCharacterException {
         String[] args = new String[2];
         args[0] = "8090";
         args[1] = "localhost";

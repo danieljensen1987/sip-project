@@ -11,13 +11,13 @@ import java.io.OutputStream;
 
 public class FirstRoundHandler implements HttpHandler {
 
-    private static final boolean dev = false;
+    private static final boolean dev = true;
     Facade facade;
 
-    public FirstRoundHandler() {
+    public FirstRoundHandler() throws MinimumCharacterException {
         facade = Facade.getFacade(false);
         if (dev) {
-//            facade.createTestData();
+            facade.createTestData();
         }
     }
 
@@ -70,6 +70,9 @@ public class FirstRoundHandler implements HttpHandler {
                             break;
                         case "/priority":
                             facade.addToFirstRoundPriorities(jsonQuery);
+                            break;
+                        case "/happiness":
+                            response = facade.getStudentsHappiness(jsonQuery);
                             break;
                         default:
                             response = "URI not found";

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class Pool {
     private ArrayList<String> poolA;
     private ArrayList<String> poolB;
-    private String studentID;
+    private ArrayList<String> studentID;
 
-    public Pool(ArrayList<String> poolA, ArrayList<String> poolB, String studentID) {
+    public Pool(ArrayList<String> poolA, ArrayList<String> poolB, ArrayList<String> studentID) {
         this.poolA = poolA;
         this.poolB = poolB;
         this.studentID = studentID;
@@ -21,7 +21,7 @@ public class Pool {
         return poolB;
     }
 
-    public String getStudentID() {
+    public ArrayList<String> getStudents() {
         return studentID;
     }
 }
