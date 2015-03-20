@@ -11,6 +11,6 @@ public interface IFacade {
     public String getFirstRoundSubjects();
     public boolean addToFirstRoundPriorities(String json);
     public String getFirstRoundPriorities();
-    public int calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID);
+    public String calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID);
     public String getStudentsHappiness(String json);
 }

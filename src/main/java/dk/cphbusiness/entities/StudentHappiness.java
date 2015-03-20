@@ -2,14 +2,14 @@ package dk.cphbusiness.entities;
 
 public class StudentHappiness {
     private String studentID;
-    private int happiness;
+    private String happiness;
 
-    public StudentHappiness(String studentID, int happiness) {
+    public StudentHappiness(String studentID, String happiness) {
         this.studentID = studentID;
         this.happiness = happiness;
     }
 
-    public int getHappiness() {
+    public String getHappiness() {
         return happiness;
     }
 

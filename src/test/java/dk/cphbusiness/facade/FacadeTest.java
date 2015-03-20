@@ -201,14 +201,14 @@ public class FacadeTest {
         poolA.add("");
         poolB.add("SW Design");
         poolB.add("");
-        int points1 = facade.calculatePoint(poolA, poolB, "Bjarke Carlsen");
-        int points2 = facade.calculatePoint(poolA, poolB, "Martin Olgenkjær");
-        int points3 = facade.calculatePoint(poolA, poolB, "Henrik Stavnem");
-        int points4 = facade.calculatePoint(poolA, poolB, "Nicklas Thomsen");
-        assertEquals(13, points1); 
-        assertEquals(20, points2); 
-        assertEquals(6, points3); 
-        assertEquals(17, points4); 
+        String points1 = facade.calculatePoint(poolA, poolB, "Bjarke Carlsen");
+        String points2 = facade.calculatePoint(poolA, poolB, "Martin Olgenkjær");
+        String points3 = facade.calculatePoint(poolA, poolB, "Henrik Stavnem");
+        String points4 = facade.calculatePoint(poolA, poolB, "Nicklas Thomsen");
+        assertEquals("(1,0)", points1); 
+        assertEquals("(1,1)", points2); 
+        assertEquals("(0,0)", points3); 
+        assertEquals("(1,2)", points4); 
     }  
     
     @Test

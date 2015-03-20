@@ -165,7 +165,7 @@ public class Facade implements IFacade {
     }
 
     @Override
-    public int calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID) {
+    public String calculatePoint(ArrayList<String> poolA, ArrayList<String> poolB, String studentID) {
         int pointA = 0;
         int pointB = 0;
 
@@ -215,7 +215,28 @@ public class Facade implements IFacade {
 
             }
         }
-        return pointA + pointB;
+        String score = "";
+        switch (pointA + pointB) {
+            case 6:
+                score = "(0,0)";
+                break;
+            case 10:
+                score = "(2,0)";
+                break;
+            case 13:
+                score = "(1,0)";
+                break;
+            case 14:
+                score = "(2,2)";
+                break;
+            case 17:
+                score = "(1,2)";
+                break;
+            case 20:
+                score = "(1,1)";
+                break;
+        }
+        return score;
     }
 
     @Override
@@ -225,7 +246,7 @@ public class Facade implements IFacade {
         ArrayList<String> poolA = p.getPoolA();
         ArrayList<String> poolB = p.getPoolB();
         for (String student : p.getStudents()) {
-            int points = calculatePoint(poolA, poolB, student);
+            String points = calculatePoint(poolA, poolB, student);
             happinessList.add(new StudentHappiness(student, points));
         }
 
